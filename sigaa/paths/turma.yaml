@@ -1,0 +1,36 @@
+/Turma:
+  get:
+    tags:
+      - Turma
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation
+/Turma/{id}:
+  get:
+    tags:
+      - Turma
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation

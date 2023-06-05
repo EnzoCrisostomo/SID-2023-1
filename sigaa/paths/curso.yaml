@@ -1,0 +1,90 @@
+/Curso:
+  get:
+    tags:
+      - Curso
+    summary: Lista todos os cursos
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation
+/Curso/{id}:
+  get:
+    tags:
+      - Curso
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation
+/Curso/{id}/EstruturaCurricular:
+  get:
+    tags:
+      - Curso
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation
+/Curso/{id}/EstruturaCurricular/{curriculo}:
+  get:
+    tags:
+      - Curso
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation
+/Curso/{id}/EstruturaCurricular/{curriculo}/disciplina:
+  get:
+    tags:
+      - Curso
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation

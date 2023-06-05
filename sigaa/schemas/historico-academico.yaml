@@ -1,0 +1,9 @@
+HistoricoAcademico:
+  type: object
+  properties:
+    aluno:
+      $ref: './aluno.yaml#/AlunoShort'
+    disciplinas:
+      type: array
+      items:
+        $ref: './disciplina.yaml#/DisciplinaHistoricoAcademico'

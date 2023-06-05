@@ -1,0 +1,37 @@
+Aluno:
+  allOf:
+  - $ref: '#/AlunoShort'
+  - type: object
+    properties:
+      email: 
+        type: string
+        format: email
+      ira: 
+        type: number
+        example:
+          4.5
+      curriculo: 
+        type: string
+        example:
+          6532/2
+      status: 
+        type: boolean
+      periodoIngresso:
+        $ref: './periodo-letivo.yaml#/PeriodoLetivo'
+      curso:
+        $ref: './curso.yaml#/CursoShort'
+AlunoShort:
+  allOf:
+  - $ref: './_resource.yaml#/Resource'
+  - type: object
+    properties:
+      matricula:
+        type: string
+        example:
+          '180012345'
+      nome: 
+        type: string
+        example:
+          RICARDO STACIARINI PUTTINI
+AlunoSearchSet:
+  type: object

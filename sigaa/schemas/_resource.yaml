@@ -1,0 +1,55 @@
+Resource:
+  type: object
+  properties:
+    id:
+      type: string
+_JsonPatch:
+  type: array
+  items:
+    type: object
+    properties:
+      op:
+        type: string
+        enum:
+        - replace
+        - add
+      path:
+        type: string
+        enum:
+        - /status
+        - /motivoIndeferimento
+      value:
+        type: string
+SearchSet:
+  type: object
+  properties:
+    _timestamp:
+      type: string
+      format: dateTime
+    _total:
+      type: integer
+    _size:
+      type: integer
+    _offset:
+      type: integer
+    _next:
+      type: string
+    _previous:
+      type: string
+#    _items:
+#      oneOf:
+#        - type: array
+#          items:
+#            $ref: './schemas/aluno.yaml#/AlunoShort'
+#        - type: array
+#              items:
+#                $ref: '#/components/schemas/CursoShort'
+#            - type: array
+#              items:
+#                $ref: '#/components/schemas/DisciplinaShort'
+#            - type: array
+#              items:
+#                $ref: '#/components/schemas/Matricula'
+#            - type: array
+#              items:
+#                $ref: '#/components/schemas/TurmaShort'

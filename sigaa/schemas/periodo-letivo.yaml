@@ -1,0 +1,11 @@
+PeriodoLetivo:
+  type: object
+  properties:
+    ano:
+      type: number
+      minimum: 1990
+      maximum: 2100
+    numero:
+      type: number
+      minimum: 0
+      maximum: 2

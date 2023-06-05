@@ -1,0 +1,60 @@
+/HistoricoAcademico/{id}:
+  get:
+    tags:
+      - Histórico Acadêmico
+    summary: Consulta um Histórico Acadêmico, pelo código
+    description: (descrever)
+    operationId: detailDisciplina
+    parameters:
+      - name: id
+        in: path
+        description: código da disciplina
+        required: true
+        schema:
+          type: string
+          example: 'ENE0088'
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/disciplina.yaml#/Disciplina'
+      '404':
+        description: not found
+/HistoricoAcademico/{id}/disciplina/{disciplina}/$preRequisitos:
+  get:
+    tags:
+      - Histórico Acadêmico
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation
+/HistoricoAcademico/{id}/disciplina/{disciplina}/$matriculaElegivel:
+  get:
+    tags:
+      - Histórico Acadêmico
+    summary: temp
+    description: (descrever)
+    operationId: temp
+    parameters:
+      - name: id
+        in: path
+        description: (description)
+        required: true
+        schema:
+          type: string
+          example: 'temptemp'
+    responses:
+      '200':
+        description: successful operation

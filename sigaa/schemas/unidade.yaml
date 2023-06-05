@@ -1,0 +1,11 @@
+Unidade:
+  type: object
+  properties:
+    codigo:
+      type: string
+      example:
+        ENE
+    nome: 
+      type: string
+      example:
+        DEPARTAMENTO DE ENGENHARIA ELÉTRICA

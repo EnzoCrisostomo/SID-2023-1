@@ -1,0 +1,85 @@
+openapi: 3.0.3
+info:
+  title: SIGAA
+  description: |-
+    API para acesso a funcionalidades do SIGAA.
+  termsOfService: http://sid.redes.unb.br/SIGAA/termos
+  contact:
+    email: enzo.crisostomo2000@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '1.0'
+servers:
+  - url: http://sid.redes.unb.br/SIGAA/api/prof
+tags:
+  - name: Aluno
+    description: Aluno de graduação da Universidade de Brasília
+  - name: Curso
+    description: Curso de graduação da Universidade de Brasília
+  - name: Disciplina
+    description: Disciplina de graduação da Universidade de Brasília
+  - name: Histórico Acadêmico
+    description: Histórico acadêmico do aluno de graduação da Universidade de Brasília
+  - name: Matrícula
+    description: Matrícula de um aluno em uma turma, para um período letivo
+  - name: Turma
+    description: Turma de disciplina de graduação da Universidade de Brasília
+paths:
+  /Aluno:
+    $ref: './paths/aluno.yaml#/~1Aluno'
+  /Aluno/{matricula}:
+    $ref: './paths/aluno.yaml#/~1Aluno~1{matricula}'
+  /Curso:
+    $ref: './paths/curso.yaml#/~1Curso'
+  /Curso/{id}:
+    $ref: './paths/curso.yaml#/~1Curso~1{id}'
+  /Curso/{id}/EstruturaCurricular:
+    $ref: './paths/curso.yaml#/~1Curso~1{id}~1EstruturaCurricular'
+  /Curso/{id}/EstruturaCurricular/{curriculo}:
+    $ref: './paths/curso.yaml#/~1Curso~1{id}~1EstruturaCurricular~1{curriculo}'
+  /Curso/{id}/EstruturaCurricular/{curriculo}/disciplina:
+    $ref: './paths/curso.yaml#/~1Curso~1{id}~1EstruturaCurricular~1{curriculo}~1disciplina'
+  /Disciplina:
+    $ref: './paths/disciplina.yaml#/~1Disciplina'
+  /Disciplina/{id}:
+    $ref: './paths/disciplina.yaml#/~1Disciplina~1{id}'
+  /HistoricoAcademico/{id}:
+    $ref: './paths/historico-academico.yaml#/~1HistoricoAcademico~1{id}'
+  /HistoricoAcademico/{id}/disciplina/{disciplina}/$preRequisitos:
+    $ref: './paths/historico-academico.yaml#/~1HistoricoAcademico~1{id}~1disciplina~1{disciplina}~1$preRequisitos'
+  /HistoricoAcademico/{id}/disciplina/{disciplina}/$matriculaElegivel:
+    $ref: './paths/historico-academico.yaml#/~1HistoricoAcademico~1{id}~1disciplina~1{disciplina}~1$matriculaElegivel'
+  /Matricula:
+    $ref: './paths/matricula.yaml#/~1Matricula'
+  /Turma:
+    $ref: './paths/turma.yaml#/~1Turma'
+  /Turma/{id}:
+    $ref: './paths/turma.yaml#/~1Turma~1{id}'
+
+components:
+  schemas:
+      Aluno:
+        $ref: './schemas/aluno.yaml#/Aluno'
+      AlunoShort:
+        $ref: './schemas/aluno.yaml#/AlunoShort'
+      AlunoSearchSet:
+        $ref: './schemas/aluno.yaml#/AlunoSearchSet'
+      Curso:
+        $ref: './schemas/curso.yaml#/Curso'
+      CursoShort:
+        $ref: './schemas/curso.yaml#/CursoShort'
+      Disciplina:
+        $ref: './schemas/disciplina.yaml#/Disciplina'
+      DisciplinaShort:
+        $ref: './schemas/disciplina.yaml#/DisciplinaShort'
+      DisciplinaSearchSet:
+        $ref: './schemas/disciplina.yaml#/DisciplinaSearchSet'
+      DisciplinaHistoricoAcademico:
+        $ref: './schemas/disciplina.yaml#/DisciplinaHistoricoAcademico'
+      HistoricoAcademico:
+        $ref: './schemas/historico-academico.yaml#/HistoricoAcademico'
+      _StatusMatricula:
+        $ref: './schemas/matricula.yaml#/_StatusMatricula'
+      PeriodoLetivo:
+        $ref: './schemas/periodo-letivo.yaml#/PeriodoLetivo'

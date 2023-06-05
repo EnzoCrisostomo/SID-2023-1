@@ -1,0 +1,69 @@
+Disciplina:
+  allOf:
+  - $ref: '#/DisciplinaShort'
+  - type: object
+    properties:
+      cargaHoraria:
+        type: object
+        properties:
+          teorica: 
+            type: integer
+            example:
+              60
+          pratica:
+            type: integer
+            example:
+              0
+          extensionista:
+            type: integer
+            example:
+              0
+      unidade:
+        $ref: './unidade.yaml#/Unidade'        
+      preRequisitos:
+        type: array
+        items:
+          $ref: "#/DisciplinaShort"  
+DisciplinaShort:
+  allOf:
+  - $ref: './_resource.yaml#/Resource'
+  - type: object
+    properties:
+      codigo:
+        type: string
+        example:
+          ENE0025
+      nome: 
+        type: string
+        example:
+          PROTOCOLOS DE TRANSPORTE E ROTEAMENTO
+      modalidade: 
+        type: string
+        enum:
+          - Presencial
+          - EAD
+DisciplinaSearchSet:
+  type: object
+  properties:
+    _timestamp:
+      type: string
+      format: dateTime
+    _total:
+      type: integer
+    _size:
+      type: integer
+    _offset:
+      type: integer
+    _next:
+      type: string
+    _previous:
+      type: string
+    _items:
+      type: array
+      items:
+        $ref: '#/DisciplinaShort'
+DisciplinaHistoricoAcademico:
+      type: object
+      properties:
+        periodo:
+          $ref: './periodo-letivo.yaml#/PeriodoLetivo'

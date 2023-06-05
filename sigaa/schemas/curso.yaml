@@ -1,0 +1,75 @@
+Curso:
+  allOf:
+    - $ref: '#/CursoShort'
+    - type: object
+      properties:
+        grau:
+          $ref: '#/Grau'
+        modalidade:
+          type: string
+          enum:
+            - Presencial
+            - A Distância
+          example:
+            'Presencial'
+        turno:
+          type: string
+          enum:
+            - DIRUNO
+            - NOTURNO
+          example:
+            'DIRUNO'
+        coordenador:
+          $ref: '#/Coordenador'
+        unidade: 
+          $ref: './unidade.yaml#/Unidade'
+        estruturaCurricular:
+          $ref: './estrutura-curricular.yaml#/EstruturaCurricularShort'
+CursoShort:
+  allOf:
+    - $ref: './_resource.yaml#/Resource'
+    - type: object
+      properties:
+        codigo:
+          type: string
+          example:
+            'ENE-123'
+        nome:
+          type: string
+          example:
+            'ENGENHARIA DE REDES DE COMUNICAÇÃO'
+
+Coordenador:
+  type: object
+  properties:
+    nome:
+      type: string
+      example: VINICIUS PEREIRA GONCALVES
+    telefone:
+      type: string
+      example: 61 9 9999-9999
+    email:
+      type: string
+      example: coordenador@unb.br
+Grau:
+  type: string
+  enum:
+    - Licenciado
+    - Engenheiro Florestal
+    - Engenheiro
+    - Engenheiro Civil
+    - Engenheiro Eletricista
+    - Engenheiro Mecânico
+    - Arquiteto e Urbanista
+    - Engenheiro Agrônomo
+    - Médico Veterinário
+    - Enfermeiro
+    - Médico
+    - Engenheiro de Controle e Automação
+    - Geólogo
+    - Psicólogo
+    - Bacharel
+    - Nutricionista
+    - Cirurgião Dentista
+  example:
+    'Engenheiro'

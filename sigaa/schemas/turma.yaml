@@ -1,0 +1,59 @@
+TurmaShort:
+  allOf:
+  - $ref: './_resource.yaml#/Resource'
+  - type: object
+    properties:
+      codigo:
+        type: string
+        example: 1234
+      vagasOfertadas: 
+        type: integer
+        example: 60
+      vagasOcupadas: 
+        type: integer
+        example: 60
+Turma:
+  allOf:
+  - $ref: '#/TurmaShort'
+  - type: object
+    properties:
+      disciplina:
+        $ref: './disciplina.yaml#/DisciplinaShort'
+      periodoLetivo:
+        $ref: './periodo-letivo.yaml#/PeriodoLetivo'
+      horario:
+        $ref: '#/Horario'
+      localidade:
+        $ref: '#/Localidade'
+      professor:
+        type: string
+        example: RICARDO STACIARINI PUTTINI
+Horario:
+  type: object
+  properties:
+    dia:
+      type: string
+      enum:
+        - seg
+        - ter
+        - qua
+        - qui
+        - sex
+        - sab
+        - dom
+    horaInicio:
+      type: string
+      example: 14h00
+    horaFim:
+      type: string
+      example: 16h00
+Localidade:
+  type: string
+  properties:
+    nome:
+      type: string
+      example: FT BT-16/15
+    descricao:
+      type: string 
+      example: Faculdade de Tecnologia, corredor de eletrica
+      

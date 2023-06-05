@@ -1,0 +1,64 @@
+/Disciplina:
+  get:
+    tags:
+      - Disciplina
+    summary: Pesquisa disciplinas
+    description: (descrever)
+    operationId: searchDisciplina
+    parameters:
+      - name: nome
+        in: query
+        description: Nome ou parte do nome da disciplina
+        required: false
+        schema:
+          type: string
+      - name: unidade
+        in: query
+        description: Código da unidade da disciplina
+        required: false
+        schema:
+          type: string
+          example: 'ENE'
+      - name: _offset
+        in: query
+        description: ìndice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:       
+              $ref: '../schemas/disciplina.yaml#/DisciplinaSearchSet'
+/Disciplina/{id}:
+  get:
+    tags:
+      - Disciplina
+    summary: Consulta uma disciplina, pelo código
+    description: (descrever)
+    operationId: detailDisciplina
+    parameters:
+      - name: id
+        in: path
+        description: código da disciplina
+        required: true
+        schema:
+          type: string
+          example: 'ENE0088'
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/disciplina.yaml#/Disciplina'
+      '404':
+        description: not found

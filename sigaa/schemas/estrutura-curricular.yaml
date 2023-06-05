@@ -1,0 +1,65 @@
+EstruturaCurricular:
+  allOf:
+  - $ref: '#/EstruturaCurricularShort'
+  - type: object
+    properties:
+      disciplina:
+        type: array
+        items:
+        # TODO Corrigir para disciplina estrutura curricular
+          $ref: './disciplina.yaml#/DisciplinaShort'
+      cargaHoraria:
+        $ref: '#/CargaHoraria'
+      prazo:
+        $ref: '#/Prazo'
+      periodoEntradaVigor:
+        $ref: './periodo-letivo.yaml#/PeriodoLetivo'
+EstruturaCurricularShort:
+  allOf:
+  - $ref: './_resource.yaml#/Resource'
+  - type: object
+    properties:
+      codigo:
+        type: string
+        example:
+          2023/1
+      status: 
+        type: string
+        enum:
+         - ativo
+         - inativo
+        example:
+          ativo
+Prazo:
+  type: object
+  properties:
+    minimo:
+      type: integer
+      example: 10
+    medio:
+      type: integer
+      example: 10
+    maximo:
+      type: integer
+      example: 20
+CargaHoraria:
+  type: object
+  properties:
+    totalMinima:
+      type: integer
+      example: 3750
+    totalObrigatoria:
+      type: integer
+      example: 2340
+    minimaOptativa:
+      type: integer
+      example: 1110
+    maximaComponentesEletivos:
+      type: integer
+      example: 360
+    maximaPeriodoLetivo:
+      type: integer
+      example: 450
+    minimaPeriodoLetivo:
+      type: integer
+      example: 210

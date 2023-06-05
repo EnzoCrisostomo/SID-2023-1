@@ -1,0 +1,83 @@
+/Aluno:
+  get:
+    tags:
+      - Aluno
+    summary: Lista todos alunos
+    description: (descrever)
+    operationId: searchAluno
+    parameters:
+      - name: nome
+        in: query
+        description: Nome ou parte do nome do aluno (nome)
+        required: false
+        schema:
+          type: string
+      - name: curso
+        in: query
+        description: código do curso (curso.codigo)
+        required: false
+        schema:
+          type: string
+      - name: curriculo
+        in: query
+        description: <código do> currículo (curriculo)
+        required: false
+        schema:
+          type: string
+      - name: periodoIngresso
+        in: query
+        description: período de ingresso do aluno no curso, no formato {ano}/{numero} (ano->periodoIngresso.ano, numero->periodoIngresso.numero). Por exemplo, para o primeiro período do ano de 2023, utilizar periodoIngresso=2023/1.
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        description: status (status)
+        required: false
+        schema:
+          type: boolean
+      - name: _offset
+        in: query
+        description: ìndice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/aluno.yaml#/AlunoShort'
+/Aluno/{matricula}:
+  get:
+    tags:
+      - Aluno
+    summary: Consulta um Aluno, pela matrícula
+    description: (descrever)
+    operationId: detailAluno
+    parameters:
+      - name: matricula
+        in: path
+        description: matrícula do aluno na UnB
+        required: true
+        schema:
+          type: string
+          example: '180012345'
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/aluno.yaml#/Aluno'
+      '404':
+        description: not found

@@ -1,0 +1,10 @@
+_StatusMatricula:
+  type: string
+  enum:
+    - preMatricula
+    - solicitado
+    - matriculado
+    - idenferido
+    - cancelado
+    - trancamento
+    - retirado
