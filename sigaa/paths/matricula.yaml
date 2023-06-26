@@ -75,7 +75,9 @@
   post:
     tags:
       - Matrícula
-    summary: cria uma nova matrícula  
+    summary: cria uma nova matrícula
+    description: (descrever)
+    operationId: createMatricula
     requestBody:
       description: Lista de matrículas para criar
       content:
@@ -98,7 +100,9 @@
   get:
     tags:
       - Matrícula
-    summary: consulta uma matrícula  
+    summary: consulta uma matrícula
+    description: (descrever)
+    operationId: detailMatricula
     responses:
       '200':
         description: successful operation
@@ -110,6 +114,8 @@
     tags:
       - Matrícula
     summary: altera o status e (opcional) insere detalhe  
+    description: (descrever)
+    operationId: patchhMatricula
     requestBody:
       description: teste
       content:

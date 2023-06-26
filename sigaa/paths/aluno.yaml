@@ -2,8 +2,8 @@
   get:
     tags:
       - Aluno
-    summary: Lista todos alunos
-    description: (descrever)
+    summary: Pesquisa alunos
+    description: Pesquisa um aluno por nome, curso, currículo, periodo de ingresso e status.
     operationId: searchAluno
     parameters:
       - name: nome
@@ -14,25 +14,25 @@
           type: string
       - name: curso
         in: query
-        description: código do curso (curso.codigo)
+        description: Código do curso (curso.codigo)
         required: false
         schema:
           type: string
       - name: curriculo
         in: query
-        description: código do currículo (curriculo)
+        description: Código do currículo (curriculo)
         required: false
         schema:
           type: string
       - name: periodoIngresso
         in: query
-        description: período de ingresso do aluno no curso, no formato {ano}/{numero} (ano->periodoIngresso.ano, numero->periodoIngresso.numero). Por exemplo, para o primeiro período do ano de 2023, utilizar periodoIngresso=2023/1.
+        description: Período de ingresso do aluno no curso, no formato {ano}/{numero} (ano->periodoIngresso.ano, numero->periodoIngresso.numero). Por exemplo, para o primeiro período do ano de 2023, utilizar periodoIngresso=2023/1.
         required: false
         schema:
           type: string
       - name: status
         in: query
-        description: status (status)
+        description: Status (status)
         required: false
         schema:
           type: boolean
@@ -60,16 +60,16 @@
     tags:
       - Aluno
     summary: Consulta um Aluno, pela matrícula
-    description: (descrever)
+    description: Faz a consulta de um Aluno por sua matrícula, retornando seus itens relacionados
     operationId: detailAluno
     parameters:
       - name: matricula
         in: path
-        description: matrícula do aluno na UnB
+        description: Matrícula do aluno na UnB
         required: true
         schema:
           type: string
-          example: '180012345'
+          example: 180012345
     responses:
       '200':
         description: successful operation

@@ -21,7 +21,7 @@
           example: 'ENE'
       - name: _offset
         in: query
-        description: ìndice do primeiro item da página 
+        description: Índice do primeiro item da página 
         required: false
         schema:
           type: integer

@@ -2,26 +2,84 @@
   get:
     tags:
       - Curso
-    summary: Lista todos os cursos
-    description: (descrever)
-    operationId: temp
+    summary: Pesquisa cursos
+    description: Pesquisa um curso por código, nome, grau, modalidade, turno, coordenador e/ou unidade
+    operationId: searchCurso
     parameters:
-      - name: id
-        in: path
-        description: (description)
-        required: true
+      - name: codigo
+        in: query
+        description: O código identificador do curso
+        required: false
         schema:
           type: string
-          example: 'temptemp'
+          example: 12345
+      - name: nome
+        in: query
+        description: O nome do curso
+        required: false
+        schema:
+          type: string
+          example: ENGENHARIA DE REDES DE COMUNICAÇÃO
+      - name: grau
+        in: query
+        description: O grau do curso
+        required: false
+        schema:
+          type: string
+          example: Bacharel
+      - name: modalidade
+        in: query
+        description: A modalidade do curso
+        required: false
+        schema:
+          type: string
+          example: Presencial
+      - name: turno
+        in: query
+        description: O turno do curso
+        required: false
+        schema:
+          type: string
+          example: Diurno
+      - name: coordenador
+        in: query
+        description: O coordenador do curso
+        required: false
+        schema:
+          type: string
+          example: VINICIUS PEREIRA GONCALVES
+      - name: unidade
+        in: query
+        description: A unidade resposável pelo curso
+        required: false
+        schema:
+          type: string
+          example: ENE
+      - name: _offset
+        in: query
+        description: Índice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/curso.yaml#/CursoSearchSet'
 /Curso/{id}:
   get:
     tags:
       - Curso
     summary: temp
-    description: (descrever)
+    description: detailCurso
     operationId: temp
     parameters:
       - name: id
@@ -40,7 +98,7 @@
       - Curso
     summary: temp
     description: (descrever)
-    operationId: temp
+    operationId: searchEstruturaCurricular
     parameters:
       - name: id
         in: path
@@ -58,7 +116,7 @@
       - Curso
     summary: temp
     description: (descrever)
-    operationId: temp
+    operationId: detailEstruturaCurricular
     parameters:
       - name: id
         in: path
@@ -76,7 +134,7 @@
       - Curso
     summary: temp
     description: (descrever)
-    operationId: temp
+    operationId: tempDisciplina
     parameters:
       - name: id
         in: path

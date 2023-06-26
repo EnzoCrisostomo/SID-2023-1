@@ -2,35 +2,62 @@
   get:
     tags:
       - Turma
-    summary: temp
+    summary: Pesquisa uma turma
     description: (descrever)
-    operationId: temp
+    operationId: searchTurma
     parameters:
-      - name: id
-        in: path
-        description: (description)
-        required: true
+      - name: codDisciplina
+        in: query
+        description: codigo da disciplina
+        required: false
         schema:
           type: string
-          example: 'temptemp'
+      - name: periodo letivo
+        in: query
+        description: período letivo da (turma da) matrícula, no formato ano-numero, p.ex. 2018-1
+        required: false
+        schema:
+          type: string
+      - name: _offset
+        in: query
+        description: ìndice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:       
+              $ref: '../schemas/turma.yaml#/TurmaSearchSet'
 /Turma/{id}:
   get:
     tags:
       - Turma
-    summary: temp
+    summary: Consulta uma turma
     description: (descrever)
-    operationId: temp
+    operationId: detailTurma
     parameters:
       - name: id
         in: path
-        description: (description)
+        description: id da turma
         required: true
         schema:
           type: string
-          example: 'temptemp'
+          example: 12345
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:       
+              $ref: '../schemas/turma.yaml#/Turma'
+      '404':
+        description: not found

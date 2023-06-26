@@ -10,15 +10,13 @@ Curso:
           enum:
             - Presencial
             - A Distância
-          example:
-            'Presencial'
+          example: Presencial
         turno:
           type: string
           enum:
             - DIRUNO
             - NOTURNO
-          example:
-            'DIRUNO'
+          example: DIRUNO
         coordenador:
           $ref: '#/Coordenador'
         unidade: 
@@ -32,12 +30,10 @@ CursoShort:
       properties:
         codigo:
           type: string
-          example:
-            'ENE-123'
+          example: 12345
         nome:
           type: string
-          example:
-            'ENGENHARIA DE REDES DE COMUNICAÇÃO'
+          example: ENGENHARIA DE REDES DE COMUNICAÇÃO
 CursoSearchSet:
   allOf:
   - $ref: './_resource.yaml#/SearchSet'
@@ -79,5 +75,4 @@ Grau:
     - Bacharel
     - Nutricionista
     - Cirurgião Dentista
-  example:
-    'Engenheiro'
+  example: Engenheiro

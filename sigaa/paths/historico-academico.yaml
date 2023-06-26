@@ -4,7 +4,7 @@
       - Histórico Acadêmico
     summary: Consulta um Histórico Acadêmico, pelo código
     description: (descrever)
-    operationId: detailDisciplina
+    operationId: detailHistoricoAcademico
     parameters:
       - name: id
         in: path
@@ -28,7 +28,7 @@
       - Histórico Acadêmico
     summary: temp
     description: (descrever)
-    operationId: temp
+    operationId: preRequesitos
     parameters:
       - name: id
         in: path
@@ -46,7 +46,7 @@
       - Histórico Acadêmico
     summary: temp
     description: (descrever)
-    operationId: temp
+    operationId: matriculaElegivel
     parameters:
       - name: id
         in: path
