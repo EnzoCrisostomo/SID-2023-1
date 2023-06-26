@@ -34,4 +34,11 @@ AlunoShort:
         example:
           RICARDO STACIARINI PUTTINI
 AlunoSearchSet:
-  type: object
+  allOf:
+  - $ref: './_resource.yaml#/SearchSet'
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: '#/AlunoShort'

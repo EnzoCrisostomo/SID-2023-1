@@ -2,17 +2,143 @@
   get:
     tags:
       - Matrícula
-    summary: temp
+    summary: pesquisa matrículas  
     description: (descrever)
-    operationId: temp
+    operationId: searchMatricula
     parameters:
-      - name: id
-        in: path
-        description: (description)
+      - name: periodoLetivo
+        in: query
+        description: período letivo da (turma da) matrícula, no formato ano-numero, p.ex. 2018-1
         required: true
         schema:
           type: string
-          example: 'temptemp'
+          example: '2018-1'
+      - name: aluno
+        in: query
+        description: id (matricula) do aluno
+        required: false
+        schema:
+          type: string
+      - name: turma
+        in: query
+        description: id da turma
+        required: false
+        schema:
+          type: string
+          example: '123412341234'
+      - name: turma.disciplina
+        in: query
+        description: Código da disciplina da turma
+        required: false
+        schema:
+          type: string
+      - name: turma.codigo
+        in: query
+        description: Código da turma
+        required: false
+        schema:
+          type: string
+      - name: status
+        in: query
+        required: false
+        schema:
+          $ref: '../schemas/matricula.yaml#/_StatusMatricula'
+      - name: _omitirAluno    
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: _omitirTurma    
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: _offset
+        in: query
+        description: ìndice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:       
+              $ref: '../schemas/matricula.yaml#/MatriculaSearchSet'         
+  post:
+    tags:
+      - Matrícula
+    summary: cria uma nova matrícula  
+    requestBody:
+      description: Lista de matrículas para criar
+      content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/matricula.yaml#/Matricula'
+      required: true
+    responses:
+      '201':
+        description: successful operation
+        content:
+          application/json:
+              schema:
+                $ref: '../schemas/matricula.yaml#/Matricula'
+      '404':
+        description: not found
+/Matricula/{id}:
+  get:
+    tags:
+      - Matrícula
+    summary: consulta uma matrícula  
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/matricula.yaml#/Matricula'
+  patch:
+    tags:
+      - Matrícula
+    summary: altera o status e (opcional) insere detalhe  
+    requestBody:
+      description: teste
+      content:
+          application/json-patch+json:
+            schema:
+              $ref: '../schemas/_resource.yaml#/_JsonPatch'
+            examples:
+              status:
+                description: qualquer status, exceto 'indeferido'
+                value:
+                  - op: replace
+                    path: /status
+                    value: matriculado
+              statusIndeferido:
+                description: status 'indeferido', necessário adicionar o motivo do indeferimento
+                value:
+                  - op: replace
+                    path: /status
+                    value: indeferido
+                  - op: add
+                    path: /detalhe
+                    value: turmaSemVagas
+      required: true
+    responses:
+      '200':
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/matricula.yaml#/Matricula'
+      '404':
+        description: not found

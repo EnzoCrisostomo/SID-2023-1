@@ -38,7 +38,15 @@ CursoShort:
           type: string
           example:
             'ENGENHARIA DE REDES DE COMUNICAÇÃO'
-
+CursoSearchSet:
+  allOf:
+  - $ref: './_resource.yaml#/SearchSet'
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: '#/CursoShort'
 Coordenador:
   type: object
   properties:

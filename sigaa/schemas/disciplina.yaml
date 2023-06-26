@@ -43,25 +43,14 @@ DisciplinaShort:
           - Presencial
           - EAD
 DisciplinaSearchSet:
-  type: object
-  properties:
-    _timestamp:
-      type: string
-      format: dateTime
-    _total:
-      type: integer
-    _size:
-      type: integer
-    _offset:
-      type: integer
-    _next:
-      type: string
-    _previous:
-      type: string
-    _items:
-      type: array
-      items:
-        $ref: '#/DisciplinaShort'
+  allOf:
+  - $ref: './_resource.yaml#/SearchSet'
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: '#/DisciplinaShort'
 DisciplinaHistoricoAcademico:
       type: object
       properties:

@@ -1,3 +1,35 @@
+Matricula:
+  allOf:
+  - $ref: '#/MatriculaShort'
+  - type: object
+    properties:
+      turma:
+        $ref: './turma.yaml#/Turma'
+      aluno:
+        $ref: './aluno.yaml#/AlunoShort'
+MatriculaShort:
+  allOf:
+  - $ref: './_resource.yaml#/Resource'
+  - type: object
+    properties:
+      status:
+        type: string
+        example: indeferido
+      prioridade: 
+        type: integer
+        example: 3
+      detalhe: 
+        type: string
+        example: Vagas esgotadas
+MatriculaSearchSet:
+  allOf:
+  - $ref: './_resource.yaml#/SearchSet'
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: '#/MatriculaShort'
 _StatusMatricula:
   type: string
   enum:

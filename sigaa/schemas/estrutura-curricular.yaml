@@ -30,6 +30,15 @@ EstruturaCurricularShort:
          - inativo
         example:
           ativo
+EstruturaCurricularSearchSet:
+  allOf:
+  - $ref: './_resource.yaml#/SearchSet'
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: '#/EstruturaCurricularShort'
 Prazo:
   type: object
   properties:

@@ -28,6 +28,15 @@ Turma:
       professor:
         type: string
         example: RICARDO STACIARINI PUTTINI
+TurmaSearchSet:
+  allOf:
+  - $ref: './_resource.yaml#/SearchSet'
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: '#/TurmaShort'
 Horario:
   type: object
   properties:

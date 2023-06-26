@@ -20,7 +20,7 @@
           type: string
       - name: curriculo
         in: query
-        description: <código do> currículo (curriculo)
+        description: código do currículo (curriculo)
         required: false
         schema:
           type: string
@@ -54,9 +54,7 @@
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '../schemas/aluno.yaml#/AlunoShort'
+              $ref: '../schemas/aluno.yaml#/AlunoSearchSet'
 /Aluno/{matricula}:
   get:
     tags:

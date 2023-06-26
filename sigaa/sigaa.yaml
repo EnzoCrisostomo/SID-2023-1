@@ -3,15 +3,16 @@ info:
   title: SIGAA
   description: |-
     API para acesso a funcionalidades do SIGAA.
+    Alunos: Enzo Crisóstomo - 190086751, Heitor Vieira - 180121821  e Júlia Ramos - 200058703
   termsOfService: http://sid.redes.unb.br/SIGAA/termos
   contact:
     email: enzo.crisostomo2000@gmail.com
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: '1.0'
+  version: '1.3'
 servers:
-  - url: http://sid.redes.unb.br/SIGAA/api/prof
+  - url: http://sid.redes.unb.br/SIGAA/api/MatriculaSigaa
 tags:
   - name: Aluno
     description: Aluno de graduação da Universidade de Brasília
@@ -52,6 +53,8 @@ paths:
     $ref: './paths/historico-academico.yaml#/~1HistoricoAcademico~1{id}~1disciplina~1{disciplina}~1$matriculaElegivel'
   /Matricula:
     $ref: './paths/matricula.yaml#/~1Matricula'
+  /Matricula/{id}:
+    $ref: './paths/matricula.yaml#/~1Matricula~1{id}'
   /Turma:
     $ref: './paths/turma.yaml#/~1Turma'
   /Turma/{id}:
