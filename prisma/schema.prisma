@@ -1,0 +1,196 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://SIGAA:SIGAA@172.16.5.134:5432/SIGAA?schema=public"
+}
+
+model SIGAA_ALUNO {
+  MATRICULA            String                 @id @unique(map: "PK_SIGAA_ALUNO") @db.VarChar(9)
+  NOME                 String                 @db.VarChar(80)
+  SIGAA_RL_ALUNO_CURSO SIGAA_RL_ALUNO_CURSO[]
+}
+
+model SIGAA_CURRICULO {
+  ID                            String                          @id @unique(map: "PK_SIGAA_CURRICULO") @db.VarChar(7)
+  STATUS                        String?                         @db.VarChar(1)
+  PERIODO_LETIVO_VIGOR          String                          @db.VarChar(5)
+  CARGA_HORARIA_MINIMA_TOTAL    Decimal                         @db.Decimal(5, 0)
+  CARGA_HORARIA_MINIMA_OPT      Decimal                         @db.Decimal(5, 0)
+  CARGA_HORARIA_OBR             Decimal                         @db.Decimal(5, 0)
+  CARGA_HORARIA_ELETIVA_MAX     Decimal                         @db.Decimal(5, 0)
+  CARGA_HORARIA_MAX_PERIODO     Decimal                         @db.Decimal(5, 0)
+  NUM_PERIODOS                  Decimal                         @db.Decimal(2, 0)
+  MIN_PERIODOS                  Decimal                         @db.Decimal(2, 0)
+  MAX_PERIODOS                  Decimal                         @db.Decimal(2, 0)
+  SIGAA_RL_ALUNO_CURSO          SIGAA_RL_ALUNO_CURSO[]
+  SIGAA_RL_CURRICULO_CURSO      SIGAA_RL_CURRICULO_CURSO[]
+  SIGAA_RL_CURRICULO_DISCIPLINA SIGAA_RL_CURRICULO_DISCIPLINA[]
+}
+
+model SIGAA_CURSO {
+  ID                       String                     @id @unique(map: "PK_SIGAA_CURSO") @db.VarChar(4)
+  NOME                     String                     @db.VarChar(100)
+  GRAU_ACADEMICO           String                     @db.VarChar(15)
+  TURNO                    String                     @db.VarChar(10)
+  MODALIDADE               String                     @db.VarChar(25)
+  COORDENADOR              String?                    @db.VarChar(100)
+  SIGAA_RL_ALUNO_CURSO     SIGAA_RL_ALUNO_CURSO[]
+  SIGAA_RL_CURRICULO_CURSO SIGAA_RL_CURRICULO_CURSO[]
+  SIGAA_RL_CURSO_UNIDADE   SIGAA_RL_CURSO_UNIDADE[]
+}
+
+model SIGAA_DISCIPLINA {
+  ID                                                               String                            @id @unique(map: "PK_SIGAA_DISCIPLINA") @db.VarChar(7)
+  NOME                                                             String?                           @db.VarChar(100)
+  MODALIDADE                                                       String?                           @db.VarChar(50)
+  CARGA_HORARIA_TEORICA                                            Decimal?                          @db.Decimal(3, 0)
+  CARGA_HORARIA_PRATICA                                            Decimal?                          @db.Decimal(3, 0)
+  UNIDADE                                                          String                            @db.VarChar(3)
+  SIGAA_UNIDADE                                                    SIGAA_UNIDADE                     @relation(fields: [UNIDADE], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_UNIDADE")
+  SIGAA_PREREQ_SIGAA_PREREQ_DISCIPLINA_REQUERToSIGAA_DISCIPLINA    SIGAA_PREREQ[]                    @relation("SIGAA_PREREQ_DISCIPLINA_REQUERToSIGAA_DISCIPLINA")
+  SIGAA_PREREQ_SIGAA_PREREQ_DISCIPLINA_REQUERIDOToSIGAA_DISCIPLINA SIGAA_PREREQ[]                    @relation("SIGAA_PREREQ_DISCIPLINA_REQUERIDOToSIGAA_DISCIPLINA")
+  SIGAA_RL_ALUNO_CURSO_DISCIPLINA                                  SIGAA_RL_ALUNO_CURSO_DISCIPLINA[]
+  SIGAA_RL_CURRICULO_DISCIPLINA                                    SIGAA_RL_CURRICULO_DISCIPLINA[]
+  SIGAA_TURMA                                                      SIGAA_TURMA[]
+}
+
+model SIGAA_MATRICULA {
+  ID                     Int                    @id @unique(map: "PK_SIGAA_MATRICULA") @default(autoincrement())
+  ALUNO_CURSO            Int
+  TURMA                  Int
+  STATUS                 String                 @db.VarChar(3)
+  PRIORIDADE             Decimal?               @db.Decimal(2, 0)
+  SIGAA_RL_ALUNO_CURSO   SIGAA_RL_ALUNO_CURSO   @relation(fields: [ALUNO_CURSO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ALUNO_CURSO")
+  SIGAA_MATRICULA_STATUS SIGAA_MATRICULA_STATUS @relation(fields: [STATUS], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_MATRICULA_STATUS")
+  SIGAA_TURMA            SIGAA_TURMA            @relation(fields: [TURMA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_TURMA")
+}
+
+model SIGAA_MATRICULA_HISTORICO {
+  ID                     Int                    @id @unique(map: "PK_SIGAA_MATRICULA_HISTORICO") @default(autoincrement())
+  ALUNO_CURSO            Int
+  STATUS                 String                 @db.VarChar(3)
+  TURMA                  Int
+  PRIORIDADE             Decimal?               @db.Decimal(2, 0)
+  DATA_HORA              DateTime?              @db.Timestamptz(6)
+  SIGAA_RL_ALUNO_CURSO   SIGAA_RL_ALUNO_CURSO   @relation(fields: [ALUNO_CURSO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ALUNO_CURSO")
+  SIGAA_MATRICULA_STATUS SIGAA_MATRICULA_STATUS @relation(fields: [STATUS], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_MATRICULA_STATUS")
+}
+
+model SIGAA_MATRICULA_STATUS {
+  ID                        String                      @id @db.VarChar(3)
+  STATUS                    String                      @db.VarChar(30)
+  SIGAA_MATRICULA           SIGAA_MATRICULA[]
+  SIGAA_MATRICULA_HISTORICO SIGAA_MATRICULA_HISTORICO[]
+}
+
+model SIGAA_PREREQ {
+  DISCIPLINA_REQUER                                                    String           @db.VarChar(7)
+  DISCIPLINA_REQUERIDO                                                 String           @db.VarChar(7)
+  SIGAA_DISCIPLINA_SIGAA_PREREQ_DISCIPLINA_REQUERToSIGAA_DISCIPLINA    SIGAA_DISCIPLINA @relation("SIGAA_PREREQ_DISCIPLINA_REQUERToSIGAA_DISCIPLINA", fields: [DISCIPLINA_REQUER], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DISCIPLINA_REQUER")
+  SIGAA_DISCIPLINA_SIGAA_PREREQ_DISCIPLINA_REQUERIDOToSIGAA_DISCIPLINA SIGAA_DISCIPLINA @relation("SIGAA_PREREQ_DISCIPLINA_REQUERIDOToSIGAA_DISCIPLINA", fields: [DISCIPLINA_REQUERIDO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DISCIPLINA_REQUERIDO")
+
+  @@id([DISCIPLINA_REQUER, DISCIPLINA_REQUERIDO])
+}
+
+model SIGAA_RL_ALUNO_CURSO {
+  ID                              Int                               @id @default(autoincrement())
+  ALUNO                           String                            @db.VarChar(9)
+  CURSO                           String                            @db.VarChar(4)
+  CURRICULO                       String                            @db.VarChar(7)
+  DATA_REGISTRO                   DateTime                          @db.Date
+  PERIODO_LETIVO_REGISTRO         String                            @db.VarChar(5)
+  STATUS                          String?                           @db.VarChar(1)
+  IRA                             Float?                            @db.Real
+  SIGAA_MATRICULA                 SIGAA_MATRICULA[]
+  SIGAA_MATRICULA_HISTORICO       SIGAA_MATRICULA_HISTORICO[]
+  SIGAA_ALUNO                     SIGAA_ALUNO                       @relation(fields: [ALUNO], references: [MATRICULA], onDelete: NoAction, onUpdate: NoAction, map: "FK_ALUNO")
+  SIGAA_CURRICULO                 SIGAA_CURRICULO                   @relation(fields: [CURRICULO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CURRICULO")
+  SIGAA_CURSO                     SIGAA_CURSO                       @relation(fields: [CURSO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CURSO")
+  SIGAA_RL_ALUNO_CURSO_DISCIPLINA SIGAA_RL_ALUNO_CURSO_DISCIPLINA[]
+
+  @@unique([ALUNO, CURSO, PERIODO_LETIVO_REGISTRO], map: "ALUNO_CURSO_UNIQUE")
+}
+
+model SIGAA_RL_ALUNO_CURSO_DISCIPLINA {
+  ALUNO_CURSO          Int
+  DISCIPLINA           String               @db.VarChar(7)
+  PERIODO_LETIVO       String               @db.VarChar(5)
+  MENCAO               String?              @db.VarChar(2)
+  SIGAA_RL_ALUNO_CURSO SIGAA_RL_ALUNO_CURSO @relation(fields: [ALUNO_CURSO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_ALUNO_CURSO")
+  SIGAA_DISCIPLINA     SIGAA_DISCIPLINA     @relation(fields: [DISCIPLINA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DISCIPLINA")
+
+  @@id([ALUNO_CURSO, DISCIPLINA, PERIODO_LETIVO])
+}
+
+model SIGAA_RL_CURRICULO_CURSO {
+  CURRICULO       String          @db.VarChar(7)
+  CURSO           String          @db.VarChar(4)
+  SIGAA_CURRICULO SIGAA_CURRICULO @relation(fields: [CURRICULO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CURRICULO")
+  SIGAA_CURSO     SIGAA_CURSO     @relation(fields: [CURSO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CURSO")
+
+  @@id([CURRICULO, CURSO])
+}
+
+model SIGAA_RL_CURRICULO_DISCIPLINA {
+  CURRICULO        String           @db.VarChar(7)
+  DISCIPLINA       String           @db.VarChar(7)
+  PERIODO          Decimal?         @db.Decimal(2, 0)
+  TIPO             String           @db.VarChar(15)
+  SIGAA_CURRICULO  SIGAA_CURRICULO  @relation(fields: [CURRICULO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CURRICULO")
+  SIGAA_DISCIPLINA SIGAA_DISCIPLINA @relation(fields: [DISCIPLINA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DISCIPLINA")
+
+  @@id([CURRICULO, DISCIPLINA])
+}
+
+model SIGAA_RL_CURSO_UNIDADE {
+  CURSO         String        @db.VarChar(4)
+  UNIDADE       String        @db.VarChar(3)
+  SIGAA_CURSO   SIGAA_CURSO   @relation(fields: [CURSO], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_CURSO")
+  SIGAA_UNIDADE SIGAA_UNIDADE @relation(fields: [UNIDADE], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_UNIDADE")
+
+  @@id([CURSO, UNIDADE])
+}
+
+model SIGAA_RL_TURMA_HORARIOAULA {
+  TURMA                   Int
+  HORARIOAULA             String                  @db.VarChar(2)
+  SIGAA_TURMA_HORARIOAULA SIGAA_TURMA_HORARIOAULA @relation(fields: [HORARIOAULA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_HORARIOAULA")
+  SIGAA_TURMA             SIGAA_TURMA             @relation(fields: [TURMA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_TURMA")
+
+  @@id([TURMA, HORARIOAULA])
+  @@unique([HORARIOAULA, TURMA], map: "TURMA_HAULA_UNIQUE")
+}
+
+model SIGAA_TURMA {
+  ID                         Int                          @id @unique(map: "PK_SIGAA_TURMA") @default(autoincrement())
+  CODIGO                     String                       @db.VarChar(2)
+  PERIODO_LETIVO             String                       @db.VarChar(5)
+  DISCIPLINA                 String                       @db.VarChar(7)
+  VAGAS                      Decimal?                     @db.Decimal(3, 0)
+  SEDE                       String?                      @db.VarChar(50)
+  SIGAA_MATRICULA            SIGAA_MATRICULA[]
+  SIGAA_RL_TURMA_HORARIOAULA SIGAA_RL_TURMA_HORARIOAULA[]
+  SIGAA_DISCIPLINA           SIGAA_DISCIPLINA             @relation(fields: [DISCIPLINA], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_DISCIPLINA")
+
+  @@unique([CODIGO, PERIODO_LETIVO, DISCIPLINA], map: "TURMA_UNIQUE")
+}
+
+model SIGAA_TURMA_HORARIOAULA {
+  ID                         String                       @id @db.VarChar(3)
+  DIA                        String                       @db.VarChar(3)
+  HORA_INICIO                String                       @db.VarChar(5)
+  HORA_FIM                   String                       @db.VarChar(5)
+  SIGAA_RL_TURMA_HORARIOAULA SIGAA_RL_TURMA_HORARIOAULA[]
+
+  @@unique([DIA, HORA_INICIO, HORA_FIM], map: "HORARIOAULA_UNIQUE")
+}
+
+model SIGAA_UNIDADE {
+  ID                     String                   @id @unique(map: "PK_SIGAA_UNIDADE") @db.VarChar(3)
+  NOME                   String                   @db.VarChar(100)
+  SIGAA_DISCIPLINA       SIGAA_DISCIPLINA[]
+  SIGAA_RL_CURSO_UNIDADE SIGAA_RL_CURSO_UNIDADE[]
+}
