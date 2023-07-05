@@ -3,14 +3,9 @@ import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { PrismaClient } from "@prisma/client";
 import { createServer } from "http";
 import apiRouter from "./routes/apiRoute";
-
-const prisma = new PrismaClient({
-    log: ["error"],
-    errorFormat: "minimal",
-  });  
+import prisma from "./prisma";
 
 const app = express();
 const httpServer = createServer(app);
