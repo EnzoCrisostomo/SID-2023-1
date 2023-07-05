@@ -3,9 +3,9 @@ import { RequestHandler } from "express";
 import HttpError from "http-errors";
 
 const search: RequestHandler = async (req, res, next) => {
-  const matriculas = await prisma.sIGAA_MATRICULA.findMany({});
+  const cursos = await prisma.sIGAA_CURSO.findMany({});
 
-  return res.json(matriculas);
+  return res.json(cursos);
 };
 
 export default {

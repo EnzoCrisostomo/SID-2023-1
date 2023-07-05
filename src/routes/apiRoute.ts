@@ -1,11 +1,25 @@
 import { Router } from "express";
 import matriculaRouter from "./api/matricula";
+import swaggerUi from 'swagger-ui-express';
+import swaggerJson from '../openapi/sigaa-enzo-julia-heitor-2023.1.json'
+import alunoRouter from "./api/aluno";
+import cursoRouter from "./api/curso";
+import disciplinaRouter from "./api/disciplina";
+
+
 const apiRouter = Router();
 
-apiRouter.get("/", (req, res) => res.send(`<div style="background-color: #007d35; color: #FFF; text-align: center; border-radius: 8px; padding: 5px;"><h1>Api MW2</h1> <br> <hr style="border-color: #003366;"> <h3>Status: 😎👍</h3></div>`));
-
-// ! Remember that all api routes are private to authenticated users
-// ! see: indexRoute.ts
+apiRouter.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerJson)
+);
 apiRouter.use("/matricula", matriculaRouter);
+
+apiRouter.use("/aluno", alunoRouter);
+
+apiRouter.use("/curso", cursoRouter);
+
+apiRouter.use("/disciplina", disciplinaRouter);
 
 export default apiRouter;

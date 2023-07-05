@@ -6,6 +6,8 @@ import cookieParser from "cookie-parser";
 import { createServer } from "http";
 import apiRouter from "./routes/apiRoute";
 import prisma from "./prisma";
+import handlePrismaError from "./middlewares/handlePrismaError";
+import handleCommonError from "./middlewares/handleCommonError";
 
 const app = express();
 const httpServer = createServer(app);
@@ -17,6 +19,9 @@ app.use(cors());
 app.use(cookieParser());
 
 app.use("/api", apiRouter);
+
+app.use(handlePrismaError);
+app.use(handleCommonError);
 
 httpServer.listen(3333, async () => {
     await prisma.$connect();

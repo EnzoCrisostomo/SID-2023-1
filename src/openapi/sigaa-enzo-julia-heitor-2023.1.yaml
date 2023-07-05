@@ -1,0 +1,926 @@
+openapi: 3.0.3
+info:
+  title: SIGAA
+  description: |-
+    API para acesso a funcionalidades do SIGAA.
+    Alunos: Enzo Crisóstomo - 190086751, Heitor Vieira - 180121821  e Júlia Ramos - 200058703
+  termsOfService: 'http://sid.redes.unb.br/SIGAA/termos'
+  contact:
+    email: enzo.crisostomo2000@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: '1.3'
+servers:
+  - url: 'http://sid.redes.unb.br/SIGAA/api/MatriculaSigaa'
+tags:
+  - name: Aluno
+    description: Aluno de graduação da Universidade de Brasília
+  - name: Curso
+    description: Curso de graduação da Universidade de Brasília
+  - name: Disciplina
+    description: Disciplina de graduação da Universidade de Brasília
+  - name: Histórico Acadêmico
+    description: Histórico acadêmico do aluno de graduação da Universidade de Brasília
+  - name: Matrícula
+    description: 'Matrícula de um aluno em uma turma, para um período letivo'
+  - name: Turma
+    description: Turma de disciplina de graduação da Universidade de Brasília
+paths:
+  /Aluno:
+    get:
+      tags:
+        - Aluno
+      summary: Pesquisa alunos
+      description: 'Pesquisa um aluno por nome, curso, currículo, periodo de ingresso e status.'
+      operationId: searchAluno
+      parameters:
+        - name: nome
+          in: query
+          description: Nome ou parte do nome do aluno (nome)
+          required: false
+          schema:
+            type: string
+        - name: curso
+          in: query
+          description: Código do curso (curso.codigo)
+          required: false
+          schema:
+            type: string
+        - name: curriculo
+          in: query
+          description: Código do currículo (curriculo)
+          required: false
+          schema:
+            type: string
+        - name: periodoIngresso
+          in: query
+          description: 'Período de ingresso do aluno no curso, no formato {ano}/{numero} (ano->periodoIngresso.ano, numero->periodoIngresso.numero). Por exemplo, para o primeiro período do ano de 2023, utilizar periodoIngresso=2023/1.'
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Status (status)
+          required: false
+          schema:
+            type: boolean
+        - name: _offset
+          in: query
+          description: ìndice do primeiro item da página
+          required: false
+          schema:
+            type: integer
+        - name: _size
+          in: query
+          description: Quantidade de itens na página
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlunoSearchSet'
+  '/Aluno/{matricula}':
+    get:
+      tags:
+        - Aluno
+      summary: 'Consulta um Aluno, pela matrícula'
+      description: 'Faz a consulta de um Aluno por sua matrícula, retornando seus itens relacionados'
+      operationId: detailAluno
+      parameters:
+        - name: matricula
+          in: path
+          description: Matrícula do aluno na UnB
+          required: true
+          schema:
+            type: string
+            example: 180012345
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Aluno'
+        '404':
+          description: not found
+  /Curso:
+    get:
+      tags:
+        - Curso
+      summary: Pesquisa cursos
+      description: 'Pesquisa um curso por código, nome, grau, modalidade, turno, coordenador e/ou unidade'
+      operationId: searchCurso
+      parameters:
+        - name: codigo
+          in: query
+          description: O código identificador do curso
+          required: false
+          schema:
+            type: string
+            example: 12345
+        - name: nome
+          in: query
+          description: O nome do curso
+          required: false
+          schema:
+            type: string
+            example: ENGENHARIA DE REDES DE COMUNICAÇÃO
+        - name: grau
+          in: query
+          description: O grau do curso
+          required: false
+          schema:
+            type: string
+            example: Bacharel
+        - name: modalidade
+          in: query
+          description: A modalidade do curso
+          required: false
+          schema:
+            type: string
+            example: Presencial
+        - name: turno
+          in: query
+          description: O turno do curso
+          required: false
+          schema:
+            type: string
+            example: Diurno
+        - name: coordenador
+          in: query
+          description: O coordenador do curso
+          required: false
+          schema:
+            type: string
+            example: VINICIUS PEREIRA GONCALVES
+        - name: unidade
+          in: query
+          description: A unidade resposável pelo curso
+          required: false
+          schema:
+            type: string
+            example: ENE
+        - name: _offset
+          in: query
+          description: Índice do primeiro item da página
+          required: false
+          schema:
+            type: integer
+        - name: _size
+          in: query
+          description: Quantidade de itens na página
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/AlunoSearchSet/allOf/0'
+                  - type: object
+                    properties:
+                      _items:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/CursoShort'
+  '/Curso/{id}':
+    get:
+      tags:
+        - Curso
+      summary: temp
+      description: detailCurso
+      operationId: temp
+      parameters:
+        - name: id
+          in: path
+          description: (description)
+          required: true
+          schema:
+            type: string
+            example: temptemp
+      responses:
+        '200':
+          description: successful operation
+  '/Curso/{id}/EstruturaCurricular':
+    get:
+      tags:
+        - Curso
+      summary: temp
+      description: (descrever)
+      operationId: searchEstruturaCurricular
+      parameters:
+        - name: id
+          in: path
+          description: (description)
+          required: true
+          schema:
+            type: string
+            example: temptemp
+      responses:
+        '200':
+          description: successful operation
+  '/Curso/{id}/EstruturaCurricular/{curriculo}':
+    get:
+      tags:
+        - Curso
+      summary: temp
+      description: (descrever)
+      operationId: detailEstruturaCurricular
+      parameters:
+        - name: id
+          in: path
+          description: (description)
+          required: true
+          schema:
+            type: string
+            example: temptemp
+      responses:
+        '200':
+          description: successful operation
+  '/Curso/{id}/EstruturaCurricular/{curriculo}/disciplina':
+    get:
+      tags:
+        - Curso
+      summary: temp
+      description: (descrever)
+      operationId: tempDisciplina
+      parameters:
+        - name: id
+          in: path
+          description: (description)
+          required: true
+          schema:
+            type: string
+            example: temptemp
+      responses:
+        '200':
+          description: successful operation
+  /Disciplina:
+    get:
+      tags:
+        - Disciplina
+      summary: Pesquisa disciplinas
+      description: (descrever)
+      operationId: searchDisciplina
+      parameters:
+        - name: nome
+          in: query
+          description: Nome ou parte do nome da disciplina
+          required: false
+          schema:
+            type: string
+        - name: unidade
+          in: query
+          description: Código da unidade da disciplina
+          required: false
+          schema:
+            type: string
+            example: ENE
+        - name: _offset
+          in: query
+          description: Índice do primeiro item da página
+          required: false
+          schema:
+            type: integer
+        - name: _size
+          in: query
+          description: Quantidade de itens na página
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DisciplinaSearchSet'
+  '/Disciplina/{id}':
+    get:
+      tags:
+        - Disciplina
+      summary: 'Consulta uma disciplina, pelo código'
+      description: (descrever)
+      operationId: detailDisciplina
+      parameters:
+        - name: id
+          in: path
+          description: código da disciplina
+          required: true
+          schema:
+            type: string
+            example: ENE0088
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disciplina'
+        '404':
+          description: not found
+  '/HistoricoAcademico/{id}':
+    get:
+      tags:
+        - Histórico Acadêmico
+      summary: 'Consulta um Histórico Acadêmico, pelo código'
+      description: (descrever)
+      operationId: detailHistoricoAcademico
+      parameters:
+        - name: id
+          in: path
+          description: código da disciplina
+          required: true
+          schema:
+            type: string
+            example: ENE0088
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Disciplina'
+        '404':
+          description: not found
+  '/HistoricoAcademico/{id}/disciplina/{disciplina}/$preRequisitos':
+    get:
+      tags:
+        - Histórico Acadêmico
+      summary: temp
+      description: (descrever)
+      operationId: preRequesitos
+      parameters:
+        - name: id
+          in: path
+          description: (description)
+          required: true
+          schema:
+            type: string
+            example: temptemp
+      responses:
+        '200':
+          description: successful operation
+  '/HistoricoAcademico/{id}/disciplina/{disciplina}/$matriculaElegivel':
+    get:
+      tags:
+        - Histórico Acadêmico
+      summary: temp
+      description: (descrever)
+      operationId: matriculaElegivel
+      parameters:
+        - name: id
+          in: path
+          description: (description)
+          required: true
+          schema:
+            type: string
+            example: temptemp
+      responses:
+        '200':
+          description: successful operation
+  /Matricula:
+    get:
+      tags:
+        - Matrícula
+      summary: pesquisa matrículas
+      description: (descrever)
+      operationId: searchMatricula
+      parameters:
+        - name: periodoLetivo
+          in: query
+          description: 'período letivo da (turma da) matrícula, no formato ano-numero, p.ex. 2018-1'
+          required: true
+          schema:
+            type: string
+            example: 2018-1
+        - name: aluno
+          in: query
+          description: id (matricula) do aluno
+          required: false
+          schema:
+            type: string
+        - name: turma
+          in: query
+          description: id da turma
+          required: false
+          schema:
+            type: string
+            example: '123412341234'
+        - name: turma.disciplina
+          in: query
+          description: Código da disciplina da turma
+          required: false
+          schema:
+            type: string
+        - name: turma.codigo
+          in: query
+          description: Código da turma
+          required: false
+          schema:
+            type: string
+        - name: status
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/_StatusMatricula'
+        - name: _omitirAluno
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: _omitirTurma
+          in: query
+          required: false
+          schema:
+            type: boolean
+        - name: _offset
+          in: query
+          description: ìndice do primeiro item da página
+          required: false
+          schema:
+            type: integer
+        - name: _size
+          in: query
+          description: Quantidade de itens na página
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/AlunoSearchSet/allOf/0'
+                  - type: object
+                    properties:
+                      _items:
+                        type: array
+                        items:
+                          $ref: '#/paths/~1Matricula/post/responses/201/content/application~1json/schema/allOf/0'
+    post:
+      tags:
+        - Matrícula
+      summary: cria uma nova matrícula
+      description: (descrever)
+      operationId: createMatricula
+      requestBody:
+        description: Lista de matrículas para criar
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/paths/~1Matricula/post/responses/201/content/application~1json/schema'
+        required: true
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - allOf:
+                      - $ref: '#/components/schemas/AlunoShort/allOf/0'
+                      - type: object
+                        properties:
+                          status:
+                            type: string
+                            example: indeferido
+                          prioridade:
+                            type: integer
+                            example: 3
+                          detalhe:
+                            type: string
+                            example: Vagas esgotadas
+                  - type: object
+                    properties:
+                      turma:
+                        $ref: '#/paths/~1Turma~1%7Bid%7D/get/responses/200/content/application~1json/schema'
+                      aluno:
+                        $ref: '#/components/schemas/AlunoShort'
+        '404':
+          description: not found
+  '/Matricula/{id}':
+    get:
+      tags:
+        - Matrícula
+      summary: consulta uma matrícula
+      description: (descrever)
+      operationId: detailMatricula
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1Matricula/post/responses/201/content/application~1json/schema'
+    patch:
+      tags:
+        - Matrícula
+      summary: altera o status e (opcional) insere detalhe
+      description: (descrever)
+      operationId: patchhMatricula
+      requestBody:
+        description: teste
+        content:
+          application/json-patch+json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  op:
+                    type: string
+                    enum:
+                      - replace
+                      - add
+                  path:
+                    type: string
+                    enum:
+                      - /status
+                      - /motivoIndeferimento
+                  value:
+                    type: string
+            examples:
+              status:
+                description: 'qualquer status, exceto ''indeferido'''
+                value:
+                  - op: replace
+                    path: /status
+                    value: matriculado
+              statusIndeferido:
+                description: 'status ''indeferido'', necessário adicionar o motivo do indeferimento'
+                value:
+                  - op: replace
+                    path: /status
+                    value: indeferido
+                  - op: add
+                    path: /detalhe
+                    value: turmaSemVagas
+        required: true
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/paths/~1Matricula/post/responses/201/content/application~1json/schema'
+        '404':
+          description: not found
+  /Turma:
+    get:
+      tags:
+        - Turma
+      summary: Pesquisa uma turma
+      description: (descrever)
+      operationId: searchTurma
+      parameters:
+        - name: codDisciplina
+          in: query
+          description: codigo da disciplina
+          required: false
+          schema:
+            type: string
+        - name: periodo letivo
+          in: query
+          description: 'período letivo da (turma da) matrícula, no formato ano-numero, p.ex. 2018-1'
+          required: false
+          schema:
+            type: string
+        - name: _offset
+          in: query
+          description: ìndice do primeiro item da página
+          required: false
+          schema:
+            type: integer
+        - name: _size
+          in: query
+          description: Quantidade de itens na página
+          required: false
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/AlunoSearchSet/allOf/0'
+                  - type: object
+                    properties:
+                      _items:
+                        type: array
+                        items:
+                          $ref: '#/paths/~1Turma~1%7Bid%7D/get/responses/200/content/application~1json/schema/allOf/0'
+  '/Turma/{id}':
+    get:
+      tags:
+        - Turma
+      summary: Consulta uma turma
+      description: (descrever)
+      operationId: detailTurma
+      parameters:
+        - name: id
+          in: path
+          description: id da turma
+          required: true
+          schema:
+            type: string
+            example: 12345
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - allOf:
+                      - $ref: '#/components/schemas/AlunoShort/allOf/0'
+                      - type: object
+                        properties:
+                          codigo:
+                            type: string
+                            example: 1234
+                          vagasOfertadas:
+                            type: integer
+                            example: 60
+                          vagasOcupadas:
+                            type: integer
+                            example: 60
+                  - type: object
+                    properties:
+                      disciplina:
+                        $ref: '#/components/schemas/DisciplinaShort'
+                      periodoLetivo:
+                        $ref: '#/components/schemas/PeriodoLetivo'
+                      horario:
+                        type: object
+                        properties:
+                          dia:
+                            type: string
+                            enum:
+                              - seg
+                              - ter
+                              - qua
+                              - qui
+                              - sex
+                              - sab
+                              - dom
+                          horaInicio:
+                            type: string
+                            example: 14h00
+                          horaFim:
+                            type: string
+                            example: 16h00
+                      localidade:
+                        type: string
+                        properties:
+                          nome:
+                            type: string
+                            example: FT BT-16/15
+                          descricao:
+                            type: string
+                            example: 'Faculdade de Tecnologia, corredor de eletrica'
+                      professor:
+                        type: string
+                        example: RICARDO STACIARINI PUTTINI
+        '404':
+          description: not found
+components:
+  schemas:
+    Aluno:
+      allOf:
+        - $ref: '#/components/schemas/AlunoShort'
+        - type: object
+          properties:
+            email:
+              type: string
+              format: email
+            ira:
+              type: number
+              example: 4.5
+            curriculo:
+              type: string
+              example: 6532/2
+            status:
+              type: boolean
+            periodoIngresso:
+              $ref: '#/components/schemas/PeriodoLetivo'
+            curso:
+              $ref: '#/components/schemas/CursoShort'
+    AlunoShort:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+        - type: object
+          properties:
+            matricula:
+              type: string
+              example: '180012345'
+            nome:
+              type: string
+              example: RICARDO STACIARINI PUTTINI
+    AlunoSearchSet:
+      allOf:
+        - type: object
+          properties:
+            _timestamp:
+              type: string
+              format: dateTime
+            _total:
+              type: integer
+            _size:
+              type: integer
+            _offset:
+              type: integer
+            _next:
+              type: string
+            _previous:
+              type: string
+        - type: object
+          properties:
+            _items:
+              type: array
+              items:
+                $ref: '#/components/schemas/AlunoShort'
+    Curso:
+      allOf:
+        - $ref: '#/components/schemas/CursoShort'
+        - type: object
+          properties:
+            grau:
+              type: string
+              enum:
+                - Licenciado
+                - Engenheiro Florestal
+                - Engenheiro
+                - Engenheiro Civil
+                - Engenheiro Eletricista
+                - Engenheiro Mecânico
+                - Arquiteto e Urbanista
+                - Engenheiro Agrônomo
+                - Médico Veterinário
+                - Enfermeiro
+                - Médico
+                - Engenheiro de Controle e Automação
+                - Geólogo
+                - Psicólogo
+                - Bacharel
+                - Nutricionista
+                - Cirurgião Dentista
+              example: Engenheiro
+            modalidade:
+              type: string
+              enum:
+                - Presencial
+                - A Distância
+              example: Presencial
+            turno:
+              type: string
+              enum:
+                - DIRUNO
+                - NOTURNO
+              example: DIRUNO
+            coordenador:
+              type: object
+              properties:
+                nome:
+                  type: string
+                  example: VINICIUS PEREIRA GONCALVES
+                telefone:
+                  type: string
+                  example: 61 9 9999-9999
+                email:
+                  type: string
+                  example: coordenador@unb.br
+            unidade:
+              type: object
+              properties:
+                codigo:
+                  type: string
+                  example: ENE
+                nome:
+                  type: string
+                  example: DEPARTAMENTO DE ENGENHARIA ELÉTRICA
+            estruturaCurricular:
+              allOf:
+                - $ref: '#/components/schemas/AlunoShort/allOf/0'
+                - type: object
+                  properties:
+                    codigo:
+                      type: string
+                      example: 2023/1
+                    status:
+                      type: string
+                      enum:
+                        - ativo
+                        - inativo
+                      example: ativo
+    CursoShort:
+      allOf:
+        - $ref: '#/components/schemas/AlunoShort/allOf/0'
+        - type: object
+          properties:
+            codigo:
+              type: string
+              example: 12345
+            nome:
+              type: string
+              example: ENGENHARIA DE REDES DE COMUNICAÇÃO
+    Disciplina:
+      allOf:
+        - $ref: '#/components/schemas/DisciplinaShort'
+        - type: object
+          properties:
+            cargaHoraria:
+              type: object
+              properties:
+                teorica:
+                  type: integer
+                  example: 60
+                pratica:
+                  type: integer
+                  example: 0
+                extensionista:
+                  type: integer
+                  example: 0
+            unidade:
+              $ref: '#/components/schemas/Curso/allOf/1/properties/unidade'
+            preRequisitos:
+              type: array
+              items:
+                $ref: '#/components/schemas/DisciplinaShort'
+    DisciplinaShort:
+      allOf:
+        - $ref: '#/components/schemas/AlunoShort/allOf/0'
+        - type: object
+          properties:
+            codigo:
+              type: string
+              example: ENE0025
+            nome:
+              type: string
+              example: PROTOCOLOS DE TRANSPORTE E ROTEAMENTO
+            modalidade:
+              type: string
+              enum:
+                - Presencial
+                - EAD
+    DisciplinaSearchSet:
+      allOf:
+        - $ref: '#/components/schemas/AlunoSearchSet/allOf/0'
+        - type: object
+          properties:
+            _items:
+              type: array
+              items:
+                $ref: '#/components/schemas/DisciplinaShort'
+    DisciplinaHistoricoAcademico:
+      type: object
+      properties:
+        periodo:
+          $ref: '#/components/schemas/PeriodoLetivo'
+    HistoricoAcademico:
+      type: object
+      properties:
+        aluno:
+          $ref: '#/components/schemas/AlunoShort'
+        disciplinas:
+          type: array
+          items:
+            $ref: '#/components/schemas/DisciplinaHistoricoAcademico'
+    _StatusMatricula:
+      type: string
+      enum:
+        - preMatricula
+        - solicitado
+        - matriculado
+        - idenferido
+        - cancelado
+        - trancamento
+        - retirado
+    PeriodoLetivo:
+      type: object
+      properties:
+        ano:
+          type: number
+          minimum: 1990
+          maximum: 2100
+        numero:
+          type: number
+          minimum: 0
+          maximum: 2
