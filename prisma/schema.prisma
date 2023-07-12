@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://SIGAA:SIGAA@localhost:5432/SIGAA?schema=public"
+  url      = "postgresql://postgres:password@localhost:5432/SIGAA?schema=public"
 }
 
 model SIGAA_ALUNO {
