@@ -1,32 +1,44 @@
 import prisma from "../prisma";
 import { RequestHandler } from "express";
 import HttpError from "http-errors";
+import { SearchDisciplinaRequest } from "../schemas/disciplina";
+
+function mountSearchSet<ItemType>(_items: ItemType[], _offset?: number, _total?: number){
+  return {
+    _timestamp: Date.now(),
+    _total,
+    _size: _items.length,
+    _offset,
+    _next: "string",
+    _previous: "string",
+    _items,
+  }
+}
 
 const search: RequestHandler = async (req, res, next) => {
+  const { nome, unidade, _offset, _size } = SearchDisciplinaRequest.parse(
+    req.query
+  );
 
-  const { nome, unidade, _offset, _size } = req.query;
-
-  /* if (typeof nome != 'string' || typeof unidade != 'string' || typeof _offset != 'string' || typeof _size != 'string')
-    throw new HttpError.BadRequest("Wrong Type"); */
-
+  const _total = await prisma.sIGAA_DISCIPLINA.count();
 
   const disciplinas = await prisma.sIGAA_DISCIPLINA.findMany({
     where: {
       NOME: {
-        contains: nome as any,
-        mode: "insensitive"
+        contains: nome,
+        mode: "insensitive",
       },
       UNIDADE: {
-        contains: unidade as any,
-        mode: "insensitive"
-      }
+        contains: unidade,
+        mode: "insensitive",
+      },
     },
     orderBy: { ID: "asc" },
-    skip: _offset ? parseInt(_offset as any, 10) : undefined,
-    take: _size ? parseInt(_size as any, 10) : undefined
+    skip: _offset,
+    take: _size,
   });
 
-  return res.json(disciplinas);
+  return res.json(mountSearchSet(disciplinas, _offset, _total));
 };
 
 export default {

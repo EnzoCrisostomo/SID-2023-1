@@ -10,6 +10,7 @@ export default function handlePrismaError(
   res: Response<never>,
   next: NextFunction
 ) {
+  console.log("prisma error");
   if (
     error instanceof Prisma.PrismaClientKnownRequestError ||
     error instanceof Prisma.PrismaClientValidationError
