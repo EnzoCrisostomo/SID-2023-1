@@ -1,26 +1,29 @@
 import prisma from "../prisma";
 import { RequestHandler } from "express";
 import HttpError from "http-errors";
-import { SearchDisciplinaRequest } from "../schemas/disciplina";
-
-function mountSearchSet<ItemType>(_items: ItemType[], _offset?: number, _total?: number){
-  return {
-    _timestamp: Date.now(),
-    _total,
-    _size: _items.length,
-    _offset,
-    _next: "string",
-    _previous: "string",
-    _items,
-  }
-}
+import {
+  RetrieveDisciplinaPath,
+  SearchDisciplinaQuery,
+} from "../schemas/disciplina";
+import { mountSearchSet } from "../utils";
 
 const search: RequestHandler = async (req, res, next) => {
-  const { nome, unidade, _offset, _size } = SearchDisciplinaRequest.parse(
+  const { nome, unidade, _offset, _size } = SearchDisciplinaQuery.parse(
     req.query
   );
 
-  const _total = await prisma.sIGAA_DISCIPLINA.count();
+  const _total = await prisma.sIGAA_DISCIPLINA.count({
+    where: {
+      NOME: {
+        contains: nome,
+        mode: "insensitive",
+      },
+      UNIDADE: {
+        contains: unidade,
+        mode: "insensitive",
+      },
+    },
+  });
 
   const disciplinas = await prisma.sIGAA_DISCIPLINA.findMany({
     where: {
@@ -41,6 +44,24 @@ const search: RequestHandler = async (req, res, next) => {
   return res.json(mountSearchSet(disciplinas, _offset, _total));
 };
 
+const retrieve: RequestHandler = async (req, res, next) => {
+  const { id } = RetrieveDisciplinaPath.parse(req.params);
+
+  const disciplina = await prisma.sIGAA_DISCIPLINA.findUnique({
+    where: { ID: id },
+    include:{
+      SIGAA_PREREQ_SIGAA_PREREQ_DISCIPLINA_REQUERToSIGAA_DISCIPLINA: true,
+      SIGAA_UNIDADE: true,
+      SIGAA_RL_ALUNO_CURSO_DISCIPLINA: true,
+      SIGAA_RL_CURRICULO_DISCIPLINA: true,
+      SIGAA_TURMA: true,
+    }
+  });
+
+  return res.json(disciplina);
+};
+
 export default {
-  list: search,
+  search,
+  retrieve
 };

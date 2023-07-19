@@ -12,8 +12,11 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: '1.3'
 servers:
-  - url: http://sid.redes.unb.br/SIGAA/api/MatriculaSigaa
+  - url: http://sid.redes.unb.br/SIGAA/api/matriculasigaa
+  - url: http://localhost:3333/SIGAA/api/matriculasigaa
 tags:
+  - name: Docs
+    description: Documentação da API
   - name: Aluno
     description: Aluno de graduação da Universidade de Brasília
   - name: Curso
@@ -27,6 +30,8 @@ tags:
   - name: Turma
     description: Turma de disciplina de graduação da Universidade de Brasília
 paths:
+  /Docs:
+    $ref: './paths/docs.yaml#/~1Docs'
   /Aluno:
     $ref: './paths/aluno.yaml#/~1Aluno'
   /Aluno/{matricula}:

@@ -15,10 +15,17 @@
   },
   "servers": [
     {
-      "url": "http://sid.redes.unb.br/SIGAA/api/MatriculaSigaa"
+      "url": "http://sid.redes.unb.br/SIGAA/api/matriculasigaa"
+    },
+    {
+      "url": "http://localhost:3333/SIGAA/api/matriculasigaa"
     }
   ],
   "tags": [
+    {
+      "name": "Docs",
+      "description": "Documentação da API"
+    },
     {
       "name": "Aluno",
       "description": "Aluno de graduação da Universidade de Brasília"
@@ -45,6 +52,29 @@
     }
   ],
   "paths": {
+    "/Docs": {
+      "get": {
+        "tags": [
+          "Docs"
+        ],
+        "summary": "Documentação da API",
+        "description": "Página que detalha a documentação da API.",
+        "operationId": "apiDocs",
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "content": {
+              "text/html": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "<!DOCTYPE html>\n<html lang=\"en\">\n  <!-- HTML for docs page -->\n</html>"
+              }
+            }
+          }
+        }
+      }
+    },
     "/Aluno": {
       "get": {
         "tags": [

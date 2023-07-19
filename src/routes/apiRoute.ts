@@ -10,16 +10,16 @@ import disciplinaRouter from "./api/disciplina";
 const apiRouter = Router();
 
 apiRouter.use(
-    '/api-docs',
+    '/Docs',
     swaggerUi.serve,
     swaggerUi.setup(swaggerJson)
 );
-apiRouter.use("/matricula", matriculaRouter);
+apiRouter.use("/Matricula", matriculaRouter);
 
-apiRouter.use("/aluno", alunoRouter);
+apiRouter.use("/Aluno", alunoRouter);
 
-apiRouter.use("/curso", cursoRouter);
+apiRouter.use("/Curso", cursoRouter);
 
-apiRouter.use("/disciplina", disciplinaRouter);
+apiRouter.use("/Disciplina", disciplinaRouter);
 
 export default apiRouter;

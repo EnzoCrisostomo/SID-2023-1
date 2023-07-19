@@ -16,7 +16,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(cors());
 
-app.use("/api", apiRouter);
+app.use("/SIGAA/api/matriculasigaa", apiRouter);
 
 app.use(handleZodError);
 app.use(handlePrismaError);

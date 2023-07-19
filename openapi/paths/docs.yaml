@@ -1,0 +1,19 @@
+/Docs:
+  get:
+    tags:
+      - Docs
+    summary: Documentação da API
+    description: Página que detalha a documentação da API.
+    operationId: apiDocs
+    responses:
+      '200':
+        description: successful operation
+        content:
+          text/html:
+            schema:
+              type: string
+            example: |-
+              <!DOCTYPE html>
+              <html lang="en">
+                <!-- HTML for docs page -->
+              </html>
