@@ -8,8 +8,6 @@ export function mountSearchSet<ItemType>(
     _total,
     _size: _items.length,
     _offset,
-    _next: "string",
-    _previous: "string",
     _items,
   };
 }

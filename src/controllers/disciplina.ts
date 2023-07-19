@@ -8,60 +8,78 @@ import {
 import { mountSearchSet } from "../utils";
 
 const search: RequestHandler = async (req, res, next) => {
-  const { nome, unidade, _offset, _size } = SearchDisciplinaQuery.parse(
+  let { nome, unidade, _offset, _size } = SearchDisciplinaQuery.parse(
     req.query
   );
 
-  const _total = await prisma.sIGAA_DISCIPLINA.count({
-    where: {
-      NOME: {
-        contains: nome,
-        mode: "insensitive",
-      },
-      UNIDADE: {
-        contains: unidade,
-        mode: "insensitive",
-      },
-    },
-  });
+  const disciplinas: {
+    _total: number;
+    id: string;
+    nome: string;
+    modalidade: string;
+  }[] = await prisma.$queryRaw`
+    select
+      count(dis."ID") over() as _total,
+      dis."ID",
+      dis."NOME",
+      dis."MODALIDADE"
+    from "SIGAA_DISCIPLINA" dis
+    where (unaccent(dis."NOME") ilike '%'||unaccent(${nome})||'%' or ${
+    nome ?? null
+  } is null) and
+	        (unaccent(dis."UNIDADE") ilike '%'||unaccent(${unidade})||'%' or ${
+    unidade ?? null
+  } is null)
+    order by dis."NOME"
+    offset ${_offset}
+    limit ${_size};`;
 
-  const disciplinas = await prisma.sIGAA_DISCIPLINA.findMany({
-    where: {
-      NOME: {
-        contains: nome,
-        mode: "insensitive",
-      },
-      UNIDADE: {
-        contains: unidade,
-        mode: "insensitive",
-      },
-    },
-    orderBy: { ID: "asc" },
-    skip: _offset,
-    take: _size,
-  });
+  const _total = Number(disciplinas[0]?._total);
 
-  return res.json(mountSearchSet(disciplinas, _offset, _total));
+  return res.json(
+    mountSearchSet(
+      disciplinas.map((item) => ({ ...item, _total: undefined })),
+      _offset,
+      _total
+    )
+  );
 };
 
 const retrieve: RequestHandler = async (req, res, next) => {
   const { id } = RetrieveDisciplinaPath.parse(req.params);
 
-  const disciplina = await prisma.sIGAA_DISCIPLINA.findUnique({
-    where: { ID: id },
-    include:{
-      SIGAA_PREREQ_SIGAA_PREREQ_DISCIPLINA_REQUERToSIGAA_DISCIPLINA: true,
-      SIGAA_UNIDADE: true,
-      SIGAA_RL_ALUNO_CURSO_DISCIPLINA: true,
-      SIGAA_RL_CURRICULO_DISCIPLINA: true,
-      SIGAA_TURMA: true,
-    }
-  });
+  const disciplina: any = await prisma.$queryRaw`
+    select  
+      dis."ID",
+      dis."NOME",
+      dis."CARGA_HORARIA_TEORICA",
+      dis."CARGA_HORARIA_PRATICA",
+      und."ID" as "UNIDADE_CODIGO",
+      und."NOME" as "UNIDADE_NOME"
+    from "SIGAA_DISCIPLINA" dis
+    left join "SIGAA_UNIDADE" und ON dis."UNIDADE" = und."ID" 
+    where dis."ID" = ${id};`;
 
-  return res.json(disciplina);
+  const preRequisitos: any = await prisma.$queryRaw`
+  select
+    dis."ID",
+    dis."NOME",
+    dis."MODALIDADE",
+    dis."CARGA_HORARIA_TEORICA",
+    dis."CARGA_HORARIA_PRATICA",
+    dis."UNIDADE" as "UNIDADE_CODIGO"
+  from "SIGAA_PREREQ" pre
+  left join "SIGAA_DISCIPLINA" dis on pre."DISCIPLINA_REQUERIDO" = dis."ID"
+  where pre."DISCIPLINA_REQUER" = ${id}`;
+
+  if(!disciplina[0]){
+    throw new HttpError.NotFound(`Disciplina ${id} não encontrada!`);
+  }
+
+  return res.json({...disciplina[0], preRequisitos});
 };
 
 export default {
   search,
-  retrieve
+  retrieve,
 };
