@@ -3,6 +3,6 @@ import MatriculaController from "../../controllers/matricula";
 
 const matriculaRouter = Router();
 
-matriculaRouter.get("/", MatriculaController.list);
+matriculaRouter.get("/", MatriculaController.search);
 
 export default matriculaRouter;

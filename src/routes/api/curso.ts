@@ -3,6 +3,6 @@ import CursoController from "../../controllers/curso";
 
 const cursoRouter = Router();
 
-cursoRouter.get("/", CursoController.list);
+cursoRouter.get("/", CursoController.search);
 
 export default cursoRouter;

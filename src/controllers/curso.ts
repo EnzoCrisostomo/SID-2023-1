@@ -9,5 +9,5 @@ const search: RequestHandler = async (req, res, next) => {
 };
 
 export default {
-  list: search,
+  search,
 };

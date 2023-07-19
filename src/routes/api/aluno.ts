@@ -3,6 +3,6 @@ import AlunoController from "../../controllers/aluno";
 
 const alunoRouter = Router();
 
-alunoRouter.get("/", AlunoController.list);
+alunoRouter.get("/", AlunoController.search);
 
 export default alunoRouter;
