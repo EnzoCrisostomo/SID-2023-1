@@ -8,5 +8,5 @@ export const SearchDisciplinaQuery = z.object({
 });
 
 export const RetrieveDisciplinaPath = z.object({
-  id: z.coerce.string()
-})
+  id: z.coerce.string(),
+});
