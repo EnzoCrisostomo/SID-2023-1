@@ -8,19 +8,19 @@
     parameters:
       - name: nome
         in: query
-        description: Nome ou parte do nome do aluno (nome)
+        description: Nome ou parte do nome do aluno
         required: false
         schema:
           type: string
       - name: curso
         in: query
-        description: Código do curso (curso.codigo)
+        description: Código do curso
         required: false
         schema:
           type: string
       - name: curriculo
         in: query
-        description: Código do currículo (curriculo)
+        description: Código do currículo
         required: false
         schema:
           type: string

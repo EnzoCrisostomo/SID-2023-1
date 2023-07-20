@@ -20,7 +20,7 @@ Disciplina:
               0
       unidade:
         $ref: './unidade.yaml#/Unidade'        
-      preRequisitos:
+      preRequisito:
         type: array
         items:
           $ref: "#/DisciplinaShort"  
@@ -51,8 +51,20 @@ DisciplinaSearchSet:
         type: array
         items:
           $ref: '#/DisciplinaShort'
-DisciplinaHistoricoAcademico:
-      type: object
-      properties:
-        periodo:
-          $ref: './periodo-letivo.yaml#/PeriodoLetivo'
+DisciplinaEstruturaCurricular:
+  type: object
+  properties:
+    tipo:
+      $ref: "#/DisciplinaEstruturaCurricularTipo"
+    nivel:
+      type: integer
+      description: Em que semestre da estrutura curricular a disciplina é cursada
+      example: 8
+    disciplina:
+      $ref: '#/DisciplinaShort'
+DisciplinaEstruturaCurricularTipo:
+  type: string
+  description: Se a disciplina é obrigatória ou optativa para aquela Estrutura Curricular
+  enum:
+  - Obrigatória
+  - Optativa

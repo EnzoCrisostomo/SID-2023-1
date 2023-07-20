@@ -42,7 +42,7 @@
   get:
     tags:
       - Disciplina
-    summary: Consulta uma disciplina, pelo código
+    summary: Consulta uma disciplina, pelo código da disciplina
     description: (descrever)
     operationId: detailDisciplina
     parameters:

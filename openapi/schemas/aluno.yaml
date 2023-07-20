@@ -6,16 +6,16 @@ Aluno:
       email: 
         type: string
         format: email
+        example: enzo.nogueira@unb.br
       ira: 
         type: number
-        example:
-          4.5
+        example: 4.5
       curriculo: 
         type: string
-        example:
-          6532/2
+        example: 6532/2
       status: 
         type: boolean
+        example: true
       periodoIngresso:
         $ref: './periodo-letivo.yaml#/PeriodoLetivo'
       curso:
@@ -27,12 +27,10 @@ AlunoShort:
     properties:
       matricula:
         type: string
-        example:
-          '180012345'
+        example: '190086751'
       nome: 
         type: string
-        example:
-          RICARDO STACIARINI PUTTINI
+        example: ENZO CRISÓSTOMO NOGUEIRA
 AlunoSearchSet:
   allOf:
   - $ref: './_resource.yaml#/SearchSet'

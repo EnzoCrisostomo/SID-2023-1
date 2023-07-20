@@ -6,12 +6,11 @@ EstruturaCurricular:
       disciplina:
         type: array
         items:
-        # TODO Corrigir para disciplina estrutura curricular
-          $ref: './disciplina.yaml#/DisciplinaShort'
+          $ref: './disciplina.yaml#/DisciplinaEstruturaCurricular'
       cargaHoraria:
         $ref: '#/CargaHoraria'
-      prazo:
-        $ref: '#/Prazo'
+      prazoConclusao:
+        $ref: '#/PrazoConclusao'
       periodoEntradaVigor:
         $ref: './periodo-letivo.yaml#/PeriodoLetivo'
 EstruturaCurricularShort:
@@ -30,6 +29,8 @@ EstruturaCurricularShort:
          - inativo
         example:
           ativo
+      periodoLetivoEntradaVigor:
+        $ref: './periodo-letivo.yaml#/PeriodoLetivo'
 EstruturaCurricularSearchSet:
   allOf:
   - $ref: './_resource.yaml#/SearchSet'
@@ -39,17 +40,20 @@ EstruturaCurricularSearchSet:
         type: array
         items:
           $ref: '#/EstruturaCurricularShort'
-Prazo:
+PrazoConclusao:
   type: object
   properties:
     minimo:
       type: integer
+      description: Prazo mínimo de conclusão do curso, em semestres
       example: 10
     medio:
       type: integer
+      description: Prazo médio de conclusão do curso, em semestres
       example: 10
     maximo:
       type: integer
+      description: Prazo máximo de conclusão do curso, em semestres
       example: 20
 CargaHoraria:
   type: object
@@ -60,15 +64,15 @@ CargaHoraria:
     totalObrigatoria:
       type: integer
       example: 2340
-    minimaOptativa:
+    optativaMinima:
       type: integer
       example: 1110
-    maximaComponentesEletivos:
+    eletivaMaxima:
       type: integer
       example: 360
-    maximaPeriodoLetivo:
+    maximaPorPeriodo:
       type: integer
       example: 450
-    minimaPeriodoLetivo:
+    minimaPorPeriodo:
       type: integer
       example: 210

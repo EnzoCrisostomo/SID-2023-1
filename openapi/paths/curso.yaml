@@ -6,13 +6,6 @@
     description: Pesquisa um curso por código, nome, grau, modalidade, turno, coordenador e/ou unidade
     operationId: searchCurso
     parameters:
-      - name: codigo
-        in: query
-        description: O código identificador do curso
-        required: false
-        schema:
-          type: string
-          example: 12345
       - name: nome
         in: query
         description: O nome do curso
@@ -40,17 +33,13 @@
         required: false
         schema:
           type: string
-          example: Diurno
-      - name: coordenador
-        in: query
-        description: O coordenador do curso
-        required: false
-        schema:
-          type: string
-          example: VINICIUS PEREIRA GONCALVES
+          enum:
+            - DIRUNO
+            - NOTURNO
+          example: DIRUNO
       - name: unidade
         in: query
-        description: A unidade resposável pelo curso
+        description: A código da unidade resposável pelo curso
         required: false
         schema:
           type: string
@@ -78,71 +67,136 @@
   get:
     tags:
       - Curso
-    summary: temp
-    description: detailCurso
-    operationId: temp
+    summary: Consulta um curso
+    description: Consulta um curso com seu código
+    operationId: detailCurso
     parameters:
       - name: id
         in: path
-        description: (description)
+        description: O código do curso
         required: true
         schema:
           type: string
-          example: 'temptemp'
+          example: '123'
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/curso.yaml#/Curso'
+      '404':
+        description: not found
 /Curso/{id}/EstruturaCurricular:
   get:
     tags:
       - Curso
-    summary: temp
-    description: (descrever)
-    operationId: searchEstruturaCurricular
+    summary: Pesquisa as estruturas curriculares de um curso
+    description: Pesquisa as estruturas curriculares de um curso de acordo com seu código
+    operationId: searchCursoEstruturaCurricular
     parameters:
       - name: id
         in: path
-        description: (description)
+        description: Código do curso
         required: true
         schema:
           type: string
-          example: 'temptemp'
+      - name: status
+        in: query
+        description: Status da estrutura currícular
+        required: true
+        schema:
+          type: string
+          enum:
+          - Ativo
+          - Inativo
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../schemas/estrutura-curricular.yaml#/EstruturaCurricularSearchSet'
 /Curso/{id}/EstruturaCurricular/{curriculo}:
   get:
     tags:
       - Curso
-    summary: temp
+    summary: Consulta uma estrutura curricular de um curso
     description: (descrever)
-    operationId: detailEstruturaCurricular
+    operationId: detailCursoEstruturaCurricular
     parameters:
       - name: id
         in: path
-        description: (description)
+        description: Código do curso
         required: true
         schema:
           type: string
-          example: 'temptemp'
+      - name: curriculo
+        in: path
+        description: 'Código da estrutura curricular (currículo) curso'
+        required: true
+        schema:
+          type: string
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:
+                $ref: '../schemas/estrutura-curricular.yaml#/EstruturaCurricular'
+      '404':
+        description: not found
 /Curso/{id}/EstruturaCurricular/{curriculo}/disciplina:
   get:
     tags:
       - Curso
-    summary: temp
+    summary: Pesquisa as disciplinas de uma estrutura curricular de um curso
     description: (descrever)
-    operationId: tempDisciplina
+    operationId: searchCursoEstruturaCurricularDisciplina
     parameters:
       - name: id
         in: path
-        description: (description)
+        description: Código do curso
         required: true
         schema:
           type: string
-          example: 'temptemp'
+      - name: curriculo
+        in: path
+        description: 'Código da estrutura curricular (currículo) curso'
+        required: true
+        schema:
+          type: string
+      - name: tipo
+        in: query
+        description: ''
+        required: true
+        schema:
+          $ref: '../schemas/disciplina.yaml#/DisciplinaEstruturaCurricularTipo'
+      - name: nivel
+        in: query
+        description: ''
+        required: true
+        schema:
+          type: integer
+      - name: nome
+        in: query
+        description: ''
+        required: true
+        schema:
+          type: string
+      - name: unidade
+        in: query
+        description: Código da unidade da disciplina
+        required: false
+        schema:
+          type: string
+          example: 'ENE'
     responses:
       '200':
         description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../schemas/disciplina.yaml#/DisciplinaEstruturaCurricular'
