@@ -5,9 +5,9 @@ export function mountSearchSet<ItemType>(
 ) {
   return {
     _timestamp: Date.now(),
-    _total,
+    _total: _total ?? 0,
     _size: _items.length,
-    _offset,
+    _offset: _offset ?? 0,
     _items,
   };
 }
