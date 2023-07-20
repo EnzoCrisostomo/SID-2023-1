@@ -87,7 +87,7 @@
           {
             "name": "nome",
             "in": "query",
-            "description": "Nome ou parte do nome do aluno (nome)",
+            "description": "Nome ou parte do nome do aluno",
             "required": false,
             "schema": {
               "type": "string"
@@ -96,7 +96,7 @@
           {
             "name": "curso",
             "in": "query",
-            "description": "Código do curso (curso.codigo)",
+            "description": "Código do curso",
             "required": false,
             "schema": {
               "type": "string"
@@ -105,7 +105,7 @@
           {
             "name": "curriculo",
             "in": "query",
-            "description": "Código do currículo (curriculo)",
+            "description": "Código do currículo",
             "required": false,
             "schema": {
               "type": "string"
@@ -209,16 +209,6 @@
         "operationId": "searchCurso",
         "parameters": [
           {
-            "name": "codigo",
-            "in": "query",
-            "description": "O código identificador do curso",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": 12345
-            }
-          },
-          {
             "name": "nome",
             "in": "query",
             "description": "O nome do curso",
@@ -255,23 +245,17 @@
             "required": false,
             "schema": {
               "type": "string",
-              "example": "Diurno"
-            }
-          },
-          {
-            "name": "coordenador",
-            "in": "query",
-            "description": "O coordenador do curso",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "example": "VINICIUS PEREIRA GONCALVES"
+              "enum": [
+                "DIRUNO",
+                "NOTURNO"
+              ],
+              "example": "DIRUNO"
             }
           },
           {
             "name": "unidade",
             "in": "query",
-            "description": "A unidade resposável pelo curso",
+            "description": "A código da unidade resposável pelo curso",
             "required": false,
             "schema": {
               "type": "string",
@@ -303,22 +287,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "_items": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/CursoShort"
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/CursoSearchSet"
                 }
               }
             }
@@ -331,24 +300,34 @@
         "tags": [
           "Curso"
         ],
-        "summary": "temp",
-        "description": "detailCurso",
-        "operationId": "temp",
+        "summary": "Consulta um curso",
+        "description": "Consulta um curso com seu código",
+        "operationId": "detailCurso",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "(description)",
+            "description": "O código do curso",
             "required": true,
             "schema": {
               "type": "string",
-              "example": "temptemp"
+              "example": "123"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Curso"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
           }
         }
       }
@@ -358,24 +337,43 @@
         "tags": [
           "Curso"
         ],
-        "summary": "temp",
-        "description": "(descrever)",
-        "operationId": "searchEstruturaCurricular",
+        "summary": "Pesquisa as estruturas curriculares de um curso",
+        "description": "Pesquisa as estruturas curriculares de um curso de acordo com seu código",
+        "operationId": "searchCursoEstruturaCurricular",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "(description)",
+            "description": "Código do curso",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Status da estrutura currícular",
             "required": true,
             "schema": {
               "type": "string",
-              "example": "temptemp"
+              "enum": [
+                "Ativo",
+                "Inativo"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstruturaCurricularSearchSet"
+                }
+              }
+            }
           }
         }
       }
@@ -385,24 +383,42 @@
         "tags": [
           "Curso"
         ],
-        "summary": "temp",
+        "summary": "Consulta uma estrutura curricular de um curso",
         "description": "(descrever)",
-        "operationId": "detailEstruturaCurricular",
+        "operationId": "detailCursoEstruturaCurricular",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "(description)",
+            "description": "Código do curso",
             "required": true,
             "schema": {
-              "type": "string",
-              "example": "temptemp"
+              "type": "string"
+            }
+          },
+          {
+            "name": "curriculo",
+            "in": "path",
+            "description": "Código da estrutura curricular (currículo) curso",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EstruturaCurricular"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "not found"
           }
         }
       }
@@ -412,24 +428,79 @@
         "tags": [
           "Curso"
         ],
-        "summary": "temp",
+        "summary": "Pesquisa as disciplinas de uma estrutura curricular de um curso",
         "description": "(descrever)",
-        "operationId": "tempDisciplina",
+        "operationId": "searchCursoEstruturaCurricularDisciplina",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "(description)",
+            "description": "Código do curso",
             "required": true,
             "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "curriculo",
+            "in": "path",
+            "description": "Código da estrutura curricular (currículo) curso",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tipo",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/DisciplinaHistoricoAcademico/properties/tipo"
+            }
+          },
+          {
+            "name": "nivel",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "nome",
+            "in": "query",
+            "description": "",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unidade",
+            "in": "query",
+            "description": "Código da unidade da disciplina",
+            "required": false,
+            "schema": {
               "type": "string",
-              "example": "temptemp"
+              "example": "ENE"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "successful operation"
+            "description": "successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DisciplinaEstruturaCurricular"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -500,7 +571,7 @@
         "tags": [
           "Disciplina"
         ],
-        "summary": "Consulta uma disciplina, pelo código",
+        "summary": "Consulta uma disciplina, pelo código da disciplina",
         "description": "(descrever)",
         "operationId": "detailDisciplina",
         "parameters": [
@@ -684,7 +755,16 @@
             "in": "query",
             "required": false,
             "schema": {
-              "$ref": "#/components/schemas/_StatusMatricula"
+              "type": "string",
+              "enum": [
+                "preMatricula",
+                "solicitado",
+                "matriculado",
+                "idenferido",
+                "cancelado",
+                "trancamento",
+                "retirado"
+              ]
             }
           },
           {
@@ -728,22 +808,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "_items": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1Matricula/post/responses/201/content/application~1json/schema/allOf/0"
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/MatriculaSearchSet"
                 }
               }
             }
@@ -764,7 +829,7 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "$ref": "#/paths/~1Matricula/post/responses/201/content/application~1json/schema"
+                  "$ref": "#/components/schemas/Matricula"
                 }
               }
             }
@@ -777,43 +842,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "allOf": [
-                        {
-                          "$ref": "#/components/schemas/AlunoShort/allOf/0"
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "status": {
-                              "type": "string",
-                              "example": "indeferido"
-                            },
-                            "prioridade": {
-                              "type": "integer",
-                              "example": 3
-                            },
-                            "detalhe": {
-                              "type": "string",
-                              "example": "Vagas esgotadas"
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "turma": {
-                          "$ref": "#/paths/~1Turma~1%7Bid%7D/get/responses/200/content/application~1json/schema"
-                        },
-                        "aluno": {
-                          "$ref": "#/components/schemas/AlunoShort"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Matricula"
                 }
               }
             }
@@ -838,7 +867,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1Matricula/post/responses/201/content/application~1json/schema"
+                  "$ref": "#/components/schemas/Matricula"
                 }
               }
             }
@@ -918,7 +947,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1Matricula/post/responses/201/content/application~1json/schema"
+                  "$ref": "#/components/schemas/Matricula"
                 }
               }
             }
@@ -981,22 +1010,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "_items": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1Turma~1%7Bid%7D/get/responses/200/content/application~1json/schema/allOf/0"
-                          }
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/TurmaSearchSet"
                 }
               }
             }
@@ -1030,85 +1044,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "allOf": [
-                        {
-                          "$ref": "#/components/schemas/AlunoShort/allOf/0"
-                        },
-                        {
-                          "type": "object",
-                          "properties": {
-                            "codigo": {
-                              "type": "string",
-                              "example": 1234
-                            },
-                            "vagasOfertadas": {
-                              "type": "integer",
-                              "example": 60
-                            },
-                            "vagasOcupadas": {
-                              "type": "integer",
-                              "example": 60
-                            }
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "object",
-                      "properties": {
-                        "disciplina": {
-                          "$ref": "#/components/schemas/DisciplinaShort"
-                        },
-                        "periodoLetivo": {
-                          "$ref": "#/components/schemas/PeriodoLetivo"
-                        },
-                        "horario": {
-                          "type": "object",
-                          "properties": {
-                            "dia": {
-                              "type": "string",
-                              "enum": [
-                                "seg",
-                                "ter",
-                                "qua",
-                                "qui",
-                                "sex",
-                                "sab",
-                                "dom"
-                              ]
-                            },
-                            "horaInicio": {
-                              "type": "string",
-                              "example": "14h00"
-                            },
-                            "horaFim": {
-                              "type": "string",
-                              "example": "16h00"
-                            }
-                          }
-                        },
-                        "localidade": {
-                          "type": "string",
-                          "properties": {
-                            "nome": {
-                              "type": "string",
-                              "example": "FT BT-16/15"
-                            },
-                            "descricao": {
-                              "type": "string",
-                              "example": "Faculdade de Tecnologia, corredor de eletrica"
-                            }
-                          }
-                        },
-                        "professor": {
-                          "type": "string",
-                          "example": "RICARDO STACIARINI PUTTINI"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Turma"
                 }
               }
             }
@@ -1132,7 +1068,8 @@
             "properties": {
               "email": {
                 "type": "string",
-                "format": "email"
+                "format": "email",
+                "example": "enzo.nogueira@unb.br"
               },
               "ira": {
                 "type": "number",
@@ -1143,7 +1080,8 @@
                 "example": "6532/2"
               },
               "status": {
-                "type": "boolean"
+                "type": "boolean",
+                "example": true
               },
               "periodoIngresso": {
                 "$ref": "#/components/schemas/PeriodoLetivo"
@@ -1170,11 +1108,11 @@
             "properties": {
               "matricula": {
                 "type": "string",
-                "example": "180012345"
+                "example": "190086751"
               },
               "nome": {
                 "type": "string",
-                "example": "RICARDO STACIARINI PUTTINI"
+                "example": "ENZO CRISÓSTOMO NOGUEIRA"
               }
             }
           }
@@ -1197,12 +1135,6 @@
               },
               "_offset": {
                 "type": "integer"
-              },
-              "_next": {
-                "type": "string"
-              },
-              "_previous": {
-                "type": "string"
               }
             }
           },
@@ -1284,41 +1216,10 @@
                 }
               },
               "unidade": {
-                "type": "object",
-                "properties": {
-                  "codigo": {
-                    "type": "string",
-                    "example": "ENE"
-                  },
-                  "nome": {
-                    "type": "string",
-                    "example": "DEPARTAMENTO DE ENGENHARIA ELÉTRICA"
-                  }
-                }
+                "$ref": "#/components/schemas/Unidade"
               },
               "estruturaCurricular": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/AlunoShort/allOf/0"
-                  },
-                  {
-                    "type": "object",
-                    "properties": {
-                      "codigo": {
-                        "type": "string",
-                        "example": "2023/1"
-                      },
-                      "status": {
-                        "type": "string",
-                        "enum": [
-                          "ativo",
-                          "inativo"
-                        ],
-                        "example": "ativo"
-                      }
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/EstruturaCurricularShort"
               }
             }
           }
@@ -1339,6 +1240,24 @@
               "nome": {
                 "type": "string",
                 "example": "ENGENHARIA DE REDES DE COMUNICAÇÃO"
+              }
+            }
+          }
+        ]
+      },
+      "CursoSearchSet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/CursoShort"
+                }
               }
             }
           }
@@ -1370,9 +1289,9 @@
                 }
               },
               "unidade": {
-                "$ref": "#/components/schemas/Curso/allOf/1/properties/unidade"
+                "$ref": "#/components/schemas/Unidade"
               },
-              "preRequisitos": {
+              "preRequisito": {
                 "type": "array",
                 "items": {
                   "$ref": "#/components/schemas/DisciplinaShort"
@@ -1427,13 +1346,184 @@
           }
         ]
       },
+      "DisciplinaEstruturaCurricular": {
+        "type": "object",
+        "properties": {
+          "tipo": {
+            "$ref": "#/components/schemas/DisciplinaHistoricoAcademico/properties/tipo"
+          },
+          "nivel": {
+            "type": "integer",
+            "description": "Em que semestre da estrutura curricular a disciplina é cursada",
+            "example": 8
+          },
+          "disciplina": {
+            "$ref": "#/components/schemas/DisciplinaShort"
+          }
+        }
+      },
       "DisciplinaHistoricoAcademico": {
         "type": "object",
         "properties": {
+          "mencao": {
+            "type": "string",
+            "example": "MS",
+            "enum": [
+              "SS",
+              "MS",
+              "MM",
+              "MI",
+              "II",
+              "SR"
+            ]
+          },
           "periodo": {
             "$ref": "#/components/schemas/PeriodoLetivo"
+          },
+          "presenca": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100,
+            "example": 87.5
+          },
+          "situacao": {
+            "type": "string",
+            "example": "MATR",
+            "enum": [
+              "APR",
+              "REP",
+              "MATR",
+              "TRANC",
+              "CUMP"
+            ]
+          },
+          "tipo": {
+            "type": "string",
+            "description": "Se a disciplina é obrigatória ou optativa para aquela Estrutura Curricular",
+            "enum": [
+              "Obrigatória",
+              "Optativa"
+            ]
+          },
+          "disciplina": {
+            "$ref": "#/components/schemas/DisciplinaShort"
           }
         }
+      },
+      "EstruturaCurricular": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/EstruturaCurricularShort"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "disciplina": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DisciplinaEstruturaCurricular"
+                }
+              },
+              "cargaHoraria": {
+                "type": "object",
+                "properties": {
+                  "totalMinima": {
+                    "type": "integer",
+                    "example": 3750
+                  },
+                  "totalObrigatoria": {
+                    "type": "integer",
+                    "example": 2340
+                  },
+                  "optativaMinima": {
+                    "type": "integer",
+                    "example": 1110
+                  },
+                  "eletivaMaxima": {
+                    "type": "integer",
+                    "example": 360
+                  },
+                  "maximaPorPeriodo": {
+                    "type": "integer",
+                    "example": 450
+                  },
+                  "minimaPorPeriodo": {
+                    "type": "integer",
+                    "example": 210
+                  }
+                }
+              },
+              "prazoConclusao": {
+                "type": "object",
+                "properties": {
+                  "minimo": {
+                    "type": "integer",
+                    "description": "Prazo mínimo de conclusão do curso, em semestres",
+                    "example": 10
+                  },
+                  "medio": {
+                    "type": "integer",
+                    "description": "Prazo médio de conclusão do curso, em semestres",
+                    "example": 10
+                  },
+                  "maximo": {
+                    "type": "integer",
+                    "description": "Prazo máximo de conclusão do curso, em semestres",
+                    "example": 20
+                  }
+                }
+              },
+              "periodoEntradaVigor": {
+                "$ref": "#/components/schemas/PeriodoLetivo"
+              }
+            }
+          }
+        ]
+      },
+      "EstruturaCurricularShort": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoShort/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "codigo": {
+                "type": "string",
+                "example": "2023/1"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "ativo",
+                  "inativo"
+                ],
+                "example": "ativo"
+              },
+              "periodoLetivoEntradaVigor": {
+                "$ref": "#/components/schemas/PeriodoLetivo"
+              }
+            }
+          }
+        ]
+      },
+      "EstruturaCurricularSearchSet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/EstruturaCurricularShort"
+                }
+              }
+            }
+          }
+        ]
       },
       "HistoricoAcademico": {
         "type": "object",
@@ -1449,16 +1539,64 @@
           }
         }
       },
-      "_StatusMatricula": {
-        "type": "string",
-        "enum": [
-          "preMatricula",
-          "solicitado",
-          "matriculado",
-          "idenferido",
-          "cancelado",
-          "trancamento",
-          "retirado"
+      "Matricula": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MatriculaShort"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "turma": {
+                "$ref": "#/components/schemas/Turma"
+              },
+              "aluno": {
+                "$ref": "#/components/schemas/AlunoShort"
+              }
+            }
+          }
+        ]
+      },
+      "MatriculaShort": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoShort/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "string",
+                "example": "indeferido"
+              },
+              "prioridade": {
+                "type": "integer",
+                "example": 3
+              },
+              "detalhe": {
+                "type": "string",
+                "example": "Vagas esgotadas"
+              }
+            }
+          }
+        ]
+      },
+      "MatriculaSearchSet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/MatriculaShort"
+                }
+              }
+            }
+          }
         ]
       },
       "PeriodoLetivo": {
@@ -1473,6 +1611,121 @@
             "type": "number",
             "minimum": 0,
             "maximum": 2
+          }
+        }
+      },
+      "Turma": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/TurmaShort"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "disciplina": {
+                "$ref": "#/components/schemas/DisciplinaShort"
+              },
+              "periodoLetivo": {
+                "$ref": "#/components/schemas/PeriodoLetivo"
+              },
+              "horario": {
+                "type": "object",
+                "properties": {
+                  "dia": {
+                    "type": "string",
+                    "enum": [
+                      "seg",
+                      "ter",
+                      "qua",
+                      "qui",
+                      "sex",
+                      "sab",
+                      "dom"
+                    ]
+                  },
+                  "horaInicio": {
+                    "type": "string",
+                    "example": "14h00"
+                  },
+                  "horaFim": {
+                    "type": "string",
+                    "example": "16h00"
+                  }
+                }
+              },
+              "localidade": {
+                "type": "string",
+                "properties": {
+                  "nome": {
+                    "type": "string",
+                    "example": "FT BT-16/15"
+                  },
+                  "descricao": {
+                    "type": "string",
+                    "example": "Faculdade de Tecnologia, corredor de eletrica"
+                  }
+                }
+              },
+              "professor": {
+                "type": "string",
+                "example": "RICARDO STACIARINI PUTTINI"
+              }
+            }
+          }
+        ]
+      },
+      "TurmaShort": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoShort/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "codigo": {
+                "type": "string",
+                "example": 1234
+              },
+              "vagasOfertadas": {
+                "type": "integer",
+                "example": 60
+              },
+              "vagasOcupadas": {
+                "type": "integer",
+                "example": 60
+              }
+            }
+          }
+        ]
+      },
+      "TurmaSearchSet": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/AlunoSearchSet/allOf/0"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "_items": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/TurmaShort"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Unidade": {
+        "type": "object",
+        "properties": {
+          "codigo": {
+            "type": "string",
+            "example": "ENE"
+          },
+          "nome": {
+            "type": "string",
+            "example": "DEPARTAMENTO DE ENGENHARIA ELÉTRICA"
           }
         }
       }
