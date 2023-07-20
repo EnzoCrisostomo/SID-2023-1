@@ -5,7 +5,7 @@
 | Nome                         | Github                                                | Email                         |
 | ---------------------------- | ----------------------------------------------------- | ----------------------------- |
 | Enzo Crisóstomo Nogueira     | [EnzoCrisostomo](https://github.com/EnzoCrisostomo)   | enzo.crisostomo2000@gmail.com |
-| Heitor Vieira  | [VieiraHeitor](https://github.com/VieiraHeitor) | heitor.magalhaes@aluno.unb.br   |
+| Heitor Magalhaes Vieira  | [VieiraHeitor](https://github.com/VieiraHeitor) | heitor.magalhaes@aluno.unb.br   |
 | Júlia Ramos Rodrigues | [juliaramos541](https://github.com/juliaramos541)     | rodrigues.ramos@aluno.unb.br |
 
 ## Quick start

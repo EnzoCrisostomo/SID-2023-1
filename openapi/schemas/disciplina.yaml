@@ -14,10 +14,6 @@ Disciplina:
             type: integer
             example:
               0
-          extensionista:
-            type: integer
-            example:
-              0
       unidade:
         $ref: "./unidade.yaml#/Unidade"        
       preRequisito:
