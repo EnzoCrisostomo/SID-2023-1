@@ -11,7 +11,7 @@ import {
 import { mountSearchSet } from "../utils";
 
 const search: RequestHandler = async (req, res, next) => {
-  let { nome, unidade, _offset, _size } = SearchDisciplinaQuery.parse(
+  const { nome, unidade, _offset, _size } = SearchDisciplinaQuery.parse(
     req.query
   );
 
@@ -24,15 +24,11 @@ const search: RequestHandler = async (req, res, next) => {
         dis."NOME" as nome,
         dis."MODALIDADE" as modalidade
       from "SIGAA_DISCIPLINA" dis
-      where (unaccent(dis."NOME") ilike '%'||unaccent(${nome})||'%' or ${
-      nome ?? null
-    } is null) and
-            (unaccent(dis."UNIDADE") ilike '%'||unaccent(${unidade})||'%' or ${
-      unidade ?? null
-    } is null)
+      where (unaccent(dis."NOME") ilike '%'||unaccent(${nome}::text)||'%' or ${nome}::text is null) and
+            (unaccent(dis."UNIDADE") ilike '%'||unaccent(${unidade}::text)||'%' or ${unidade}::text is null)
       order by dis."NOME"
-      offset ${_offset}
-      limit ${_size};`
+      offset ${_offset}::integer
+      limit ${_size}::integer`
   );
 
   const _total = Number(disciplinas[0]?._total ?? 0);
@@ -62,7 +58,7 @@ const retrieve: RequestHandler = async (req, res, next) => {
         und."NOME" as "UNIDADE_NOME"
       from "SIGAA_DISCIPLINA" dis
       left join "SIGAA_UNIDADE" und ON dis."UNIDADE" = und."ID" 
-      where dis."ID" = ${id}`
+      where dis."ID" = ${id}::text`
   );
 
   if (!disciplina[0]) {
@@ -78,7 +74,7 @@ const retrieve: RequestHandler = async (req, res, next) => {
         dis."MODALIDADE" as modalidade
       from "SIGAA_PREREQ" pre
       left join "SIGAA_DISCIPLINA" dis on pre."DISCIPLINA_REQUERIDO" = dis."ID"
-      where pre."DISCIPLINA_REQUER" = ${id}`
+      where pre."DISCIPLINA_REQUER" = ${id}::text`
   );
 
   const disciplinaTransformed = {
