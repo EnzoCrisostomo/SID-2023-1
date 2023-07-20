@@ -43,7 +43,7 @@ const search: RequestHandler = async (req, res, next) => {
   return res.json(mountSearchSet(disciplinasTransformed, _offset, _total));
 };
 
-const retrieve: RequestHandler = async (req, res, next) => {
+const detail: RequestHandler = async (req, res, next) => {
   const { id } = DetailDisciplinaParams.parse(req.params);
 
   const disciplina = DetailDisciplinaQueryResult.parse(
@@ -98,5 +98,5 @@ const retrieve: RequestHandler = async (req, res, next) => {
 
 export default {
   search,
-  retrieve,
+  detail,
 };

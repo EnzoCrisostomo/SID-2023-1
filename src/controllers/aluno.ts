@@ -47,7 +47,7 @@ const search: RequestHandler = async (req, res, next) => {
   return res.json(mountSearchSet(alunosTransformed, _offset, _total));
 };
 
-const retrieve: RequestHandler = async (req, res, next) => {
+const detail: RequestHandler = async (req, res, next) => {
   const { matricula } = DetailAlunoParams.parse(req.params);
 
   const aluno = DetailAlunoQueryResult.parse(
@@ -96,5 +96,5 @@ const retrieve: RequestHandler = async (req, res, next) => {
 
 export default {
   search,
-  retrieve,
+  detail,
 };
