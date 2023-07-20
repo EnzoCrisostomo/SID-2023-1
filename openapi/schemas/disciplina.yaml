@@ -1,6 +1,6 @@
 Disciplina:
   allOf:
-  - $ref: '#/DisciplinaShort'
+  - $ref: "#/DisciplinaShort"
   - type: object
     properties:
       cargaHoraria:
@@ -19,14 +19,14 @@ Disciplina:
             example:
               0
       unidade:
-        $ref: './unidade.yaml#/Unidade'        
+        $ref: "./unidade.yaml#/Unidade"        
       preRequisito:
         type: array
         items:
           $ref: "#/DisciplinaShort"  
 DisciplinaShort:
   allOf:
-  - $ref: './_resource.yaml#/Resource'
+  - $ref: "./_resource.yaml#/Resource"
   - type: object
     properties:
       codigo:
@@ -44,13 +44,13 @@ DisciplinaShort:
           - EAD
 DisciplinaSearchSet:
   allOf:
-  - $ref: './_resource.yaml#/SearchSet'
+  - $ref: "./_resource.yaml#/SearchSet"
   - type: object
     properties:
       _items:
         type: array
         items:
-          $ref: '#/DisciplinaShort'
+          $ref: "#/DisciplinaShort"
 DisciplinaEstruturaCurricular:
   type: object
   properties:
@@ -61,10 +61,43 @@ DisciplinaEstruturaCurricular:
       description: Em que semestre da estrutura curricular a disciplina é cursada
       example: 8
     disciplina:
-      $ref: '#/DisciplinaShort'
+      $ref: "#/DisciplinaShort"
 DisciplinaEstruturaCurricularTipo:
   type: string
   description: Se a disciplina é obrigatória ou optativa para aquela Estrutura Curricular
   enum:
   - Obrigatória
   - Optativa
+DisciplinaHistoricoAcademico:
+  type: object
+  properties:
+    mencao:
+      type: string
+      example: MS
+      enum: 
+        - SS
+        - MS
+        - MM
+        - MI
+        - II
+        - SR
+    periodo:
+      $ref: "./periodo-letivo.yaml#/PeriodoLetivo"
+    presenca:
+      type: number
+      minimum: 0
+      maximum: 100
+      example: 87.5
+    situacao:
+      type: string
+      example: MATR
+      enum:
+        - APR
+        - REP
+        - MATR
+        - TRANC
+        - CUMP
+    tipo:
+      $ref: "#/DisciplinaEstruturaCurricularTipo"
+    disciplina:
+      $ref: "#/DisciplinaShort"

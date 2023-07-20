@@ -1,22 +1,22 @@
 {
   "yaml.schemas": {
-    "file:///c%3A/dev/UnB/SID/.vscode/schema.json": [
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/aluno.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/paths/aluno.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/paths/curso.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/paths/historico-academico.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/historico-academico.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/paths/turma.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/paths/disciplina.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/curso.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/disciplina.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/estrutura-curricular.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/matricula.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/periodo-letivo.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/turma.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/paths/matricula.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/resource.yaml",
-      "file:///c%3A/dev/UnB/SID/sigaa/schemas/unidade.yaml"
+    "file:///c%3A/dev/UnB/SID-2023-1/.vscode/schema.json": [
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/aluno.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/paths/aluno.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/paths/curso.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/paths/historico-academico.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/historico-academico.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/paths/turma.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/paths/disciplina.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/curso.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/disciplina.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/estrutura-curricular.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/matricula.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/periodo-letivo.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/turma.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/paths/matricula.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/resource.yaml",
+      "file:///c%3A/dev/UnB/SID-2023-1/openapi/schemas/unidade.yaml"
     ]
   }
 }

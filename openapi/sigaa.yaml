@@ -77,17 +77,39 @@ components:
         $ref: './schemas/curso.yaml#/Curso'
       CursoShort:
         $ref: './schemas/curso.yaml#/CursoShort'
+      CursoSearchSet:
+        $ref: './schemas/curso.yaml#/CursoSearchSet'
       Disciplina:
         $ref: './schemas/disciplina.yaml#/Disciplina'
       DisciplinaShort:
         $ref: './schemas/disciplina.yaml#/DisciplinaShort'
       DisciplinaSearchSet:
         $ref: './schemas/disciplina.yaml#/DisciplinaSearchSet'
+      DisciplinaEstruturaCurricular:
+        $ref: './schemas/disciplina.yaml#/DisciplinaEstruturaCurricular'
       DisciplinaHistoricoAcademico:
         $ref: './schemas/disciplina.yaml#/DisciplinaHistoricoAcademico'
+      EstruturaCurricular:
+        $ref: './schemas/estrutura-curricular.yaml#/EstruturaCurricular'
+      EstruturaCurricularShort:
+        $ref: './schemas/estrutura-curricular.yaml#/EstruturaCurricularShort'
+      EstruturaCurricularSearchSet:
+        $ref: './schemas/estrutura-curricular.yaml#/EstruturaCurricularSearchSet'
       HistoricoAcademico:
         $ref: './schemas/historico-academico.yaml#/HistoricoAcademico'
-      _StatusMatricula:
-        $ref: './schemas/matricula.yaml#/_StatusMatricula'
+      Matricula:
+        $ref: './schemas/matricula.yaml#/Matricula'
+      MatriculaShort:
+        $ref: './schemas/matricula.yaml#/MatriculaShort'
+      MatriculaSearchSet:
+        $ref: './schemas/matricula.yaml#/MatriculaSearchSet'
       PeriodoLetivo:
         $ref: './schemas/periodo-letivo.yaml#/PeriodoLetivo'
+      Turma:
+        $ref: './schemas/turma.yaml#/Turma'
+      TurmaShort:
+        $ref: './schemas/turma.yaml#/TurmaShort'
+      TurmaSearchSet:
+        $ref: './schemas/turma.yaml#/TurmaSearchSet'
+      Unidade:
+        $ref: './schemas/unidade.yaml#/Unidade'
