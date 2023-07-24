@@ -88,12 +88,35 @@ export const SearchCursoQuery = z.object({
 
   export const disciplinaQueryResult = z.array(
     z.object({
-      PERIODO:z.number().optional().nullable(),
+      PERIODO:z.number(),
       TIPO:z.string(),
       ID:z.string(),
       NOME:z.string(),
       CARGA_HORARIA_TEORICA:z.number(),
       CARGA_HORARIA_PRATICA:z.number(),
       UNIDADE:z.string()
+    })
+  );
+
+  export const searchDisciplinaQueryPaths = z.object({
+    id:z.string(),
+    curriculo:z.string()
+  });
+
+  export const searchDisciplinaQueryParams = z.object({
+    tipo:z.string(),
+    nivel:z.string(),
+    nome:z.string(),
+    unidade:z.string().optional()
+  });
+
+  export const searchDisciplinaQueryResult = z.array(
+    z.object({
+        PERIODO: z.number(),
+        TIPO: z.string(),
+        CODIGO: z.string(),
+        NOME: z.string(),
+        MODALIDADE: z.string(),
+        UNIDADE: z.string()
     })
   );

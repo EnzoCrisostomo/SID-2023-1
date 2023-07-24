@@ -1,7 +1,7 @@
 import prisma from "../prisma";
 import { RequestHandler } from "express";
 import HttpError from "http-errors";
-import { DetailCursoParams, DetailCursoQueryResult, SearchCursoQuery, SearchCursoQueryResult, curriculoQuery, curriculoQueryResult, disciplinaQueryResult, searchEstruturaCurricularQueryResult, searchEstruturaQuery } from "../schemas/curso";
+import { DetailCursoParams, DetailCursoQueryResult, SearchCursoQuery, SearchCursoQueryResult, curriculoQuery, curriculoQueryResult, disciplinaQueryResult, searchDisciplinaQueryParams, searchDisciplinaQueryPaths, searchDisciplinaQueryResult, searchEstruturaCurricularQueryResult, searchEstruturaQuery } from "../schemas/curso";
 import { mapStatus, mountSearchSet } from "../utils";
 
 const search: RequestHandler = async (req, res, next) => {
@@ -157,12 +157,48 @@ const detailEstruturaCurricular: RequestHandler = async (req, res, next) => {
   return res.json(estruturaCurricular);
 };
 
-const searchDisciplinasEstruturaCurricular: RequestHandler = async (
-  req,
-  res,
-  next
-) => {
-  return res.json({});
+const searchDisciplinasEstruturaCurricular: RequestHandler = async (req,res,next) => {
+  const {id, curriculo} = searchDisciplinaQueryPaths.parse(req.params);
+  const {tipo, nivel, nome, unidade} = searchDisciplinaQueryParams.parse(req.query);
+
+  const disciplina = searchDisciplinaQueryResult.parse(
+    await prisma.$queryRaw`
+      select 
+        CAST(srcd."PERIODO" as integer),
+        case 
+          when srcd."TIPO" = 'OBR' then 'Obrigatória'
+          when srcd."TIPO" = 'OPT' then 'Optativa'
+        end as "TIPO",
+        dis."ID" as "CODIGO",
+        dis."NOME",
+        dis."MODALIDADE",
+        dis."UNIDADE" 
+      from "SIGAA_RL_CURRICULO_DISCIPLINA" srcd 
+      left join "SIGAA_DISCIPLINA" dis ON srcd."DISCIPLINA" = dis."ID" 
+      where srcd."CURRICULO" = ${id}||'/'||${curriculo}
+        and (srcd."PERIODO" = ${nivel}::integer or ${nivel}::integer is null)
+        and (unaccent(dis."NOME") ilike '%'||unaccent(${nome}::text)||'%' or ${nome}::text is null)
+        and (unaccent(dis."UNIDADE") ilike '%'||unaccent(${unidade}::text)||'%' or ${unidade}::text is null)
+        and ((srcd."TIPO" = 
+          (case 
+            when ${tipo} = 'Obrigatória' then 'OBR' 
+            when ${tipo} = 'Optativa' then 'OPT' 
+          end)
+          ) or ${tipo} is null)
+      order by srcd."PERIODO"`
+      );
+    
+    const disciplinaTransformed = {
+      tipo:disciplina[0].TIPO,
+      nivel:disciplina[0].PERIODO,
+      disciplina:{
+        codigo:disciplina[0].CODIGO,
+        nome:disciplina[0].NOME,
+        modalidade:disciplina[0].MODALIDADE
+      }
+    }
+  
+  return res.json(disciplinaTransformed);
 };
 
 export default {
