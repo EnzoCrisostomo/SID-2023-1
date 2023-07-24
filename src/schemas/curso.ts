@@ -63,6 +63,11 @@ export const SearchCursoQuery = z.object({
       PERIODO_LETIVO_VIGOR_NUMERO:z.string(),
     })
   );
+  
+  export const curriculoQuery = z.object({
+    id:z.string(),
+    curriculo:z.string()
+  });
 
   export const curriculoQueryResult = z.array(
     z.object({
