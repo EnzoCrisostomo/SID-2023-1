@@ -63,3 +63,32 @@ export const SearchCursoQuery = z.object({
       PERIODO_LETIVO_VIGOR_NUMERO:z.string(),
     })
   );
+
+  export const curriculoQueryResult = z.array(
+    z.object({
+      ID:z.string(), 
+      STATUS:z.string(), 
+      PERIODO_LETIVO_VIGOR_ANO:z.string().regex(/^\d+$/).transform(Number),
+      PERIODO_LETIVO_VIGOR_NUMERO:z.string().regex(/^\d+$/).transform(Number), 
+      CARGA_HORARIA_MINIMA_TOTAL:z.number(), 
+      CARGA_HORARIA_MINIMA_OPT:z.number(), 
+      CARGA_HORARIA_OBR:z.number(), 
+      CARGA_HORARIA_ELETIVA_MAX:z.number(), 
+      CARGA_HORARIA_MAX_PERIODO:z.number(), 
+      NUM_PERIODOS:z.number(), 
+      MIN_PERIODOS:z.number(), 
+      MAX_PERIODOS:z.number()
+    })
+  );
+
+  export const disciplinaQueryResult = z.array(
+    z.object({
+      PERIODO:z.number().optional().nullable(),
+      TIPO:z.string(),
+      ID:z.string(),
+      NOME:z.string(),
+      CARGA_HORARIA_TEORICA:z.number(),
+      CARGA_HORARIA_PRATICA:z.number(),
+      UNIDADE:z.string()
+    })
+  );

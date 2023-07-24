@@ -1,7 +1,7 @@
 import prisma from "../prisma";
 import { RequestHandler } from "express";
 import HttpError from "http-errors";
-import { DetailCursoParams, DetailCursoQueryResult, SearchCursoQuery, SearchCursoQueryResult, searchEstruturaCurricularQueryResult, searchEstruturaQuery } from "../schemas/curso";
+import { DetailCursoParams, DetailCursoQueryResult, SearchCursoQuery, SearchCursoQueryResult, curriculoQueryResult, disciplinaQueryResult, searchEstruturaCurricularQueryResult, searchEstruturaQuery } from "../schemas/curso";
 import { mapStatus, mountSearchSet } from "../utils";
 
 const search: RequestHandler = async (req, res, next) => {
@@ -93,39 +93,68 @@ const searchEstruturaCurricular: RequestHandler = async (req, res, next) => {
 const detailEstruturaCurricular: RequestHandler = async (req, res, next) => {
   const {id, curriculo} = req.params;
   
-  const detailEstruturaCurricular = await prisma.$queryRaw`
-  select   
-    ec."ID", 
-    ec."STATUS", 
-    ec."PERIODO_LETIVO_VIGOR", 
-    ec."CARGA_HORARIA_MINIMA_TOTAL", 
-    ec."CARGA_HORARIA_MINIMA_OPT", 
-    ec."CARGA_HORARIA_OBR", 
-    ec."CARGA_HORARIA_ELETIVA_MAX", 
-    ec."CARGA_HORARIA_MAX_PERIODO", 
-    ec."NUM_PERIODOS", 
-    ec."MIN_PERIODOS", 
-    ec."MAX_PERIODOS"
-  FROM public."SIGAA_CURRICULO" ec
-  where ec."ID" = ${id}||'/'||${curriculo};
-  `
-  const disciplinas = await prisma.$queryRaw`
-  select 
-    srcd."PERIODO",
-    case 
-      when srcd."TIPO" = 'OBR' then 'Obrigatória'
-      when srcd."TIPO" = 'OPT' then 'Optativa'
-    end as "TIPO",
-    dis."ID",
-    dis."NOME",
-    dis."CARGA_HORARIA_TEORICA",
-    dis."CARGA_HORARIA_PRATICA",
-    dis."UNIDADE" 
-  from "SIGAA_RL_CURRICULO_DISCIPLINA" srcd 
-  left join "SIGAA_DISCIPLINA" dis ON srcd."DISCIPLINA" = dis."ID" 
-  where srcd."CURRICULO" = ${id}||'/'||${curriculo}
-  `
-  return res.json({detailEstruturaCurricular});
+  const detailEstruturaCurricular = curriculoQueryResult.parse(
+    await prisma.$queryRaw`
+    select   
+      ec."ID", 
+      ec."STATUS", 
+      substring(ec."PERIODO_LETIVO_VIGOR" from 1 for 4) as "PERIODO_LETIVO_VIGOR_ANO",
+      substring(ec."PERIODO_LETIVO_VIGOR" from 4) as "PERIODO_LETIVO_VIGOR_NUMERO", 
+      CAST(ec."CARGA_HORARIA_MINIMA_TOTAL" as integer), 
+      CAST(ec."CARGA_HORARIA_MAX_PERIODO" as integer), 
+      CAST(ec."CARGA_HORARIA_MINIMA_OPT" as integer), 
+      CAST(ec."CARGA_HORARIA_OBR" as integer), 
+      CAST(ec."CARGA_HORARIA_ELETIVA_MAX" as integer), 
+      CAST(ec."NUM_PERIODOS" as integer), 
+      CAST(ec."MIN_PERIODOS" as integer), 
+      CAST(ec."MAX_PERIODOS" as integer)
+    FROM public."SIGAA_CURRICULO" ec
+    where ec."ID" = ${id}||'/'||${curriculo};
+    `); 
+
+  const disciplinas = disciplinaQueryResult.parse(
+    await prisma.$queryRaw`
+    select 
+      CAST(srcd."PERIODO" as integer),
+      case 
+        when srcd."TIPO" = 'OBR' then 'Obrigatória'
+        when srcd."TIPO" = 'OPT' then 'Optativa'
+      end as "TIPO",
+      dis."ID",
+      dis."NOME",
+      CAST(dis."CARGA_HORARIA_TEORICA" as integer),
+      CAST(dis."CARGA_HORARIA_PRATICA" as integer),
+      dis."UNIDADE" 
+    from "SIGAA_RL_CURRICULO_DISCIPLINA" srcd 
+    left join "SIGAA_DISCIPLINA" dis ON srcd."DISCIPLINA" = dis."ID" 
+    where srcd."CURRICULO" = ${id}||'/'||${curriculo}
+    `);
+
+  const joinedQueries={
+    periodoLetivoEntradavigor:{
+      ano:detailEstruturaCurricular[0].PERIODO_LETIVO_VIGOR_ANO,
+      numero:detailEstruturaCurricular[0].PERIODO_LETIVO_VIGOR_NUMERO
+    },
+    disciplinas,
+    cargaHoraria:{
+      totalMinima: detailEstruturaCurricular[0].CARGA_HORARIA_MINIMA_TOTAL,
+      totalObrigatoria: detailEstruturaCurricular[0].CARGA_HORARIA_OBR,
+      optativaMinima: detailEstruturaCurricular[0].CARGA_HORARIA_MINIMA_OPT,
+      eletivaMaxima: detailEstruturaCurricular[0].CARGA_HORARIA_ELETIVA_MAX,
+      maximaPorPeriodo: detailEstruturaCurricular[0].CARGA_HORARIA_MAX_PERIODO,
+    },
+    prazoConclusao: {
+      minimo: detailEstruturaCurricular[0].MIN_PERIODOS,
+      medio: detailEstruturaCurricular[0].NUM_PERIODOS,
+      maximo: detailEstruturaCurricular[0].MAX_PERIODOS
+    },
+    periodoEntradaVigor: {
+      ano: detailEstruturaCurricular[0].PERIODO_LETIVO_VIGOR_ANO,
+      numero: detailEstruturaCurricular[0].PERIODO_LETIVO_VIGOR_NUMERO
+    }
+  }
+  
+  return res.json(joinedQueries);
 };
 
 const searchDisciplinasEstruturaCurricular: RequestHandler = async (
