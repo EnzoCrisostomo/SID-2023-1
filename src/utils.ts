@@ -13,9 +13,9 @@ export function mountSearchSet<ItemType>(
 }
 
 export function mapStatus(status:string){
-  if (status = "A"){
+  if (status === "A"){
     return 'ativo'
-  }else if(status = "I"){
+  }else if(status === "I"){
     return 'inativo'
   }
 }

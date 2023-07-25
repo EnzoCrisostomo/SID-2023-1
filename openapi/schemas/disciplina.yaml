@@ -58,6 +58,15 @@ DisciplinaEstruturaCurricular:
       example: 8
     disciplina:
       $ref: "#/DisciplinaShort"
+DisciplinaEstruturaCurricularSearchSet:
+  allOf:
+  - $ref: "./_resource.yaml#/SearchSet"
+  - type: object
+    properties:
+      _items:
+        type: array
+        items:
+          $ref: "#/DisciplinaEstruturaCurricular"
 DisciplinaEstruturaCurricularTipo:
   type: string
   description: Se a disciplina é obrigatória ou optativa para aquela Estrutura Curricular

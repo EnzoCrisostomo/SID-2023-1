@@ -362,6 +362,24 @@
                 "Inativo"
               ]
             }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "Índice do primeiro item da página",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "_size",
+            "in": "query",
+            "description": "Quantidade de itens na página",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
           }
         ],
         "responses": {
@@ -454,7 +472,7 @@
             "name": "tipo",
             "in": "query",
             "description": "",
-            "required": true,
+            "required": false,
             "schema": {
               "$ref": "#/components/schemas/DisciplinaHistoricoAcademico/properties/tipo"
             }
@@ -463,7 +481,7 @@
             "name": "nivel",
             "in": "query",
             "description": "",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "integer"
             }
@@ -472,7 +490,7 @@
             "name": "nome",
             "in": "query",
             "description": "",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string"
             }
@@ -485,6 +503,24 @@
             "schema": {
               "type": "string",
               "example": "ENE"
+            }
+          },
+          {
+            "name": "_offset",
+            "in": "query",
+            "description": "Índice do primeiro item da página",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "_size",
+            "in": "query",
+            "description": "Quantidade de itens na página",
+            "required": false,
+            "schema": {
+              "type": "integer"
             }
           }
         ],
@@ -1217,9 +1253,6 @@
               },
               "unidade": {
                 "$ref": "#/components/schemas/Unidade"
-              },
-              "estruturaCurricular": {
-                "$ref": "#/components/schemas/EstruturaCurricularShort"
               }
             }
           }

@@ -21,8 +21,6 @@ Curso:
           $ref: '#/Coordenador'
         unidade: 
           $ref: './unidade.yaml#/Unidade'
-        estruturaCurricular:
-          $ref: './estrutura-curricular.yaml#/EstruturaCurricularShort'
 CursoShort:
   allOf:
     - $ref: './_resource.yaml#/Resource'

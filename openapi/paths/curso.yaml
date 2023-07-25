@@ -104,12 +104,24 @@
       - name: status
         in: query
         description: Status da estrutura currícular
-        required: true
+        required: false
         schema:
           type: string
           enum:
           - Ativo
           - Inativo
+      - name: _offset
+        in: query
+        description: Índice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
     responses:
       '200':
         description: successful operation
@@ -169,19 +181,19 @@
       - name: tipo
         in: query
         description: ''
-        required: true
+        required: false
         schema:
           $ref: '../schemas/disciplina.yaml#/DisciplinaEstruturaCurricularTipo'
       - name: nivel
         in: query
         description: ''
-        required: true
+        required: false
         schema:
           type: integer
       - name: nome
         in: query
         description: ''
-        required: true
+        required: false
         schema:
           type: string
       - name: unidade
@@ -191,6 +203,18 @@
         schema:
           type: string
           example: 'ENE'
+      - name: _offset
+        in: query
+        description: Índice do primeiro item da página 
+        required: false
+        schema:
+          type: integer
+      - name: _size
+        in: query
+        description: Quantidade de itens na página 
+        required: false
+        schema:
+          type: integer
     responses:
       '200':
         description: successful operation
