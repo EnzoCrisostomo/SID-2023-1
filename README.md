@@ -9,7 +9,7 @@
 | Júlia Ramos Rodrigues | [juliaramos541](https://github.com/juliaramos541)     | rodrigues.ramos@aluno.unb.br |
 
 ## Quick start
-### Preparar ambiente
+### Preparar variáveis ambiente
 Fazer uma cópia do arquivo .```exammple.env``` e a renomear para ```.env```. 
 
 Alterar o conteúdo de acordo com o endereço do seu banco de dados e a porta desejada para o backend.
