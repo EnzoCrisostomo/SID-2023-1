@@ -354,7 +354,7 @@
             "name": "status",
             "in": "query",
             "description": "Status da estrutura currícular",
-            "required": true,
+            "required": false,
             "schema": {
               "type": "string",
               "enum": [
