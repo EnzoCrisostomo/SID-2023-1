@@ -41,7 +41,7 @@ npm start
 O servidor hospeda uma página web contendo o swagger em [http://localhost:3333/SIGAA/api/matriculasigaa/Docs](http://localhost:3333/SIGAA/api/matriculasigaa/Docs)
 
 
-## Scripts npm para dar merge de todos os arquivos em apenas um:
+## Scripts npm para dar merge de todos os arquivos openapi em apenas um:
 ### Json
 ```bash
 npm run openapi-build-json
