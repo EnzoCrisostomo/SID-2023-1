@@ -10,15 +10,23 @@
 
 ## Quick start
 ### Preparar ambiente
-Copiar o arquivo exmample.env e renomear para ```.env```. 
+Fazer uma cópia do arquivo .```exammple.env``` e a renomear para ```.env```. 
 
-Caso necessário alterar seu conteúdo de acordo com o endereço do seu banco de dados e a porta desejada para o backend.
+Alterar o conteúdo de acordo com o endereço do seu banco de dados e a porta desejada para o backend.
+
+#### Exemplo:
+```
+DATABASE_URL=postgresql://postgres:password@localhost:5432/SIGAA?schema=public
+
+BACKEND_PORT=3333
+```
 
 ### Instalar pacotes
 ```bash
 npm install
 ```
 ### Preparar banco com prisma
+Esse passo é necessário para preparar o banco de dados para se conectar ao prisma.
 ```bash
 npm run migrate-dev
 ```
@@ -29,7 +37,7 @@ Isso também irá construir o arquivo swagger unificado
 npm start
 ```
 
-### Verificar swagger
+### Acessar documentação api swagger
 O servidor hospeda uma página web contendo o swagger em [http://localhost:3333/SIGAA/api/matriculasigaa/Docs](http://localhost:3333/SIGAA/api/matriculasigaa/Docs)
 
 
