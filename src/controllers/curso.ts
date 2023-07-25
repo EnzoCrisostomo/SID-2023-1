@@ -5,9 +5,9 @@ import { DetailCursoParams, DetailCursoQueryResult, SearchCursoQuery, SearchCurs
 import { mapStatus, mountSearchSet } from "../utils";
 
 const search: RequestHandler = async (req, res, next) => {
-  const { codigo, nome, grauAcademico, modalidade, coordenador,_offset} =
+  const { codigo, nome, grauAcademico, modalidade, coordenador, _offset } =
     SearchCursoQuery.parse(req.query);
-  
+
   const searchCurso = SearchCursoQueryResult.parse(
     await prisma.$queryRaw`
     select  
@@ -25,18 +25,18 @@ const search: RequestHandler = async (req, res, next) => {
   );
   const _total = Number(searchCurso[0]?._total ?? 0);
 
-  const cursoTransformed = searchCurso.map((item)=>({
+  const cursoTransformed = searchCurso.map((item) => ({
     "id": item.ID,
     "codigo": item.CODIGO,
-    "nome":item.NOME
+    "nome": item.NOME
   }));
 
-  return res.json(mountSearchSet(cursoTransformed, _offset,_total));
+  return res.json(mountSearchSet(cursoTransformed, _offset, _total));
 };
 
 const detail: RequestHandler = async (req, res, next) => {
-  const {id}= DetailCursoParams.parse(req.params);
-  
+  const { id } = DetailCursoParams.parse(req.params);
+
   const curso = DetailCursoQueryResult.parse(
     await prisma.$queryRaw`
     select  
@@ -48,19 +48,19 @@ const detail: RequestHandler = async (req, res, next) => {
       cur."COORDENADOR"
     from "SIGAA_CURSO" cur
     where cur."ID" = ${id}::text`);
-  
+
   return res.json(curso);
 };
 const searchEstruturaCurricular: RequestHandler = async (req, res, next) => {
-  let {id: codigo , status, _offset} = searchEstruturaQuery.parse(req.params, req.query);
-  
-  if(status="ativo") {
+  let { id: codigo, status, _offset } = searchEstruturaQuery.parse(req.params, req.query);
+
+  if (status = "ativo") {
     status = "A"
-  }else{
+  } else {
     status = "I"
   };
 
-  const estruturaCurricular =  searchEstruturaCurricularQueryResult.parse(
+  const estruturaCurricular = searchEstruturaCurricularQueryResult.parse(
     await prisma.$queryRaw`  
     select 
       count(ec."ID") over() as _total,
@@ -77,21 +77,21 @@ const searchEstruturaCurricular: RequestHandler = async (req, res, next) => {
 
   const _total = Number(estruturaCurricular[0]?._total ?? 0);
 
-  const estruturaTransformed = estruturaCurricular.map((item)=>({
+  const estruturaTransformed = estruturaCurricular.map((item) => ({
     "id": item.ID,
     "codigo": item.CODIGO,
-    "status":mapStatus(item.STATUS),
-    "periodoLetivoEntradaVigor":{
-      "ano":item.PERIODO_LETIVO_VIGOR_ANO,
-      "numero":item.PERIODO_LETIVO_VIGOR_NUMERO
+    "status": mapStatus(item.STATUS),
+    "periodoLetivoEntradaVigor": {
+      "ano": item.PERIODO_LETIVO_VIGOR_ANO,
+      "numero": item.PERIODO_LETIVO_VIGOR_NUMERO
     }
   }));
 
-  return res.json(mountSearchSet(estruturaTransformed,_offset,_total));
+  return res.json(mountSearchSet(estruturaTransformed, _offset, _total));
 };
 
 const detailEstruturaCurricular: RequestHandler = async (req, res, next) => {
-  const {id, curriculo} = curriculoQuery.parse(req.params);
+  const { id, curriculo } = curriculoQuery.parse(req.params);
 
   const detailCurriculo = curriculoQueryResult.parse(
     await prisma.$queryRaw`
@@ -110,7 +110,7 @@ const detailEstruturaCurricular: RequestHandler = async (req, res, next) => {
       CAST(ec."MAX_PERIODOS" as integer)
     FROM public."SIGAA_CURRICULO" ec
     where ec."ID" = ${id}||'/'||${curriculo};
-    `); 
+    `);
 
   const disciplinas = disciplinaQueryResult.parse(
     await prisma.$queryRaw`
@@ -130,13 +130,13 @@ const detailEstruturaCurricular: RequestHandler = async (req, res, next) => {
     where srcd."CURRICULO" = ${id}||'/'||${curriculo}
     `);
 
-  const estruturaCurricular={
-    periodoLetivoEntradavigor:{
-      ano:detailCurriculo[0].PERIODO_LETIVO_VIGOR_ANO,
-      numero:detailCurriculo[0].PERIODO_LETIVO_VIGOR_NUMERO
+  const estruturaCurricular = {
+    periodoLetivoEntradavigor: {
+      ano: detailCurriculo[0].PERIODO_LETIVO_VIGOR_ANO,
+      numero: detailCurriculo[0].PERIODO_LETIVO_VIGOR_NUMERO
     },
     disciplinas,
-    cargaHoraria:{
+    cargaHoraria: {
       totalMinima: detailCurriculo[0].CARGA_HORARIA_MINIMA_TOTAL,
       totalObrigatoria: detailCurriculo[0].CARGA_HORARIA_OBR,
       optativaMinima: detailCurriculo[0].CARGA_HORARIA_MINIMA_OPT,
@@ -153,13 +153,13 @@ const detailEstruturaCurricular: RequestHandler = async (req, res, next) => {
       numero: detailCurriculo[0].PERIODO_LETIVO_VIGOR_NUMERO
     }
   }
-  
+
   return res.json(estruturaCurricular);
 };
 
-const searchDisciplinasEstruturaCurricular: RequestHandler = async (req,res,next) => {
-  const {id, curriculo} = searchDisciplinaQueryPaths.parse(req.params);
-  const {tipo, nivel, nome, unidade} = searchDisciplinaQueryParams.parse(req.query);
+const searchDisciplinasEstruturaCurricular: RequestHandler = async (req, res, next) => {
+  const { id, curriculo } = searchDisciplinaQueryPaths.parse(req.params);
+  const { tipo, nivel, nome, unidade } = searchDisciplinaQueryParams.parse(req.query);
 
   const disciplina = searchDisciplinaQueryResult.parse(
     await prisma.$queryRaw`
@@ -186,18 +186,18 @@ const searchDisciplinasEstruturaCurricular: RequestHandler = async (req,res,next
           end)
           ) or ${tipo} is null)
       order by srcd."PERIODO"`
-      );
-    
-    const disciplinaTransformed = {
-      tipo:disciplina[0].TIPO,
-      nivel:disciplina[0].PERIODO,
-      disciplina:{
-        codigo:disciplina[0].CODIGO,
-        nome:disciplina[0].NOME,
-        modalidade:disciplina[0].MODALIDADE
-      }
+  );
+
+  const disciplinaTransformed = {
+    tipo: disciplina[0].TIPO,
+    nivel: disciplina[0].PERIODO,
+    disciplina: {
+      codigo: disciplina[0].CODIGO,
+      nome: disciplina[0].NOME,
+      modalidade: disciplina[0].MODALIDADE
     }
-  
+  }
+
   return res.json(disciplinaTransformed);
 };
 
