@@ -9,6 +9,9 @@
 | Júlia Ramos Rodrigues        | [juliaramos541](https://github.com/juliaramos541)     | rodrigues.ramos@aluno.unb.br  |
 
 ## Quick start
+### Preparar banco de dados
+Rodar scripts localizados em ```/scripts``` para iniciar e preencher o banco de dados. (postgresql)
+
 ### Preparar variáveis ambiente
 Fazer uma cópia do arquivo .```exammple.env``` e a renomear para ```.env```. 
 
