@@ -5,8 +5,8 @@
 | Nome                         | Github                                                | Email                         |
 | ---------------------------- | ----------------------------------------------------- | ----------------------------- |
 | Enzo Crisóstomo Nogueira     | [EnzoCrisostomo](https://github.com/EnzoCrisostomo)   | enzo.crisostomo2000@gmail.com |
-| Heitor Magalhaes Vieira  | [VieiraHeitor](https://github.com/VieiraHeitor) | heitor.magalhaes@aluno.unb.br   |
-| Júlia Ramos Rodrigues | [juliaramos541](https://github.com/juliaramos541)     | rodrigues.ramos@aluno.unb.br |
+| Heitor Magalhaes Vieira      | [VieiraHeitor](https://github.com/VieiraHeitor)       | heitor.magalhaes@aluno.unb.br |
+| Júlia Ramos Rodrigues        | [juliaramos541](https://github.com/juliaramos541)     | rodrigues.ramos@aluno.unb.br  |
 
 ## Quick start
 ### Preparar variáveis ambiente
@@ -25,12 +25,6 @@ BACKEND_PORT=3333
 ```bash
 npm install
 ```
-### Preparar banco com prisma
-Esse passo é necessário para preparar o banco de dados para se conectar ao prisma.
-```bash
-npm run migrate-dev
-```
-
 ### Iniciar servidor
 Isso também irá construir o arquivo swagger unificado
 ```bash
@@ -46,15 +40,7 @@ O servidor hospeda uma página web contendo o swagger em [http://localhost:3333/
 ```bash
 npm run openapi-build-json
 ```
-ou
-```bash
-npx swagger-cli bundle openapi/sigaa.yaml --outfile src/openapi/sigaa-enzo-julia-heitor-2023.1.json --type json
-```
 ### Yaml
 ```bash
 npm run openapi-build-yaml
-```
-ou
-```bash
-npx swagger-cli bundle openapi/sigaa.yaml --outfile src/openapi/sigaa-enzo-julia-heitor-2023.1.yaml --type yaml
 ```
